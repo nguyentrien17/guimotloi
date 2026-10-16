@@ -77,24 +77,13 @@ export class MessageModel {
   }
 
   /**
-   * Calculates formatted relative or absolute date
+   * Formats the creation date as an explicit dd/mm/yyyy string
    * @returns {string}
    */
   getFormattedDate() {
     try {
       const date = new Date(this.createdAt);
       if (isNaN(date.getTime())) return 'Gần đây';
-
-      const now = new Date();
-      const diffMs = now.getTime() - date.getTime();
-      const diffMins = Math.floor(diffMs / 60000);
-      const diffHours = Math.floor(diffMins / 60);
-      const diffDays = Math.floor(diffHours / 24);
-
-      if (diffMins < 2) return 'Vừa xong';
-      if (diffMins < 60) return `${diffMins} phút trước`;
-      if (diffHours < 24) return `${diffHours} giờ trước`;
-      if (diffDays < 7) return `${diffDays} ngày trước`;
 
       return date.toLocaleDateString('vi-VN', {
         day: '2-digit',

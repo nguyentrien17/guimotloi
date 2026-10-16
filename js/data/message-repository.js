@@ -19,6 +19,15 @@ import {
 import { validateMessage } from '../utils/validation.js';
 import { DEFAULT_MESSAGES_XML } from './default-xml.js';
 
+/**
+ * Message categories, each persisted as its own XML file under /data/messages/
+ * instead of a single combined file.
+ */
+export const MESSAGE_CATEGORIES = [
+  'miss_you', 'family', 'love', 'healing',
+  'gratitude', 'friends', 'apology', 'unsaid', 'hope'
+];
+
 class MessageRepository {
   constructor() {
     /** @type {MessageModel[]} */
@@ -38,25 +47,38 @@ class MessageRepository {
 
     this.initPromise = (async () => {
       let xmlMessages = [];
+      const loadErrors = [];
 
-      try {
-        const response = await fetch('/data/messages.xml', { cache: 'no-cache' });
-        if (response.ok) {
-          const xmlText = await response.text();
-          const parseResult = parseMessagesXml(xmlText);
-          if (parseResult.error) {
-            console.warn('Lỗi phân tích cú pháp XML:', parseResult.error);
-            this.xmlLoadError = parseResult.error;
-          } else {
-            xmlMessages = parseResult.messages.map(m => new MessageModel(m));
+      // Each category now lives in its own file under /data/messages/ instead
+      // of one combined messages.xml, so fetch and parse them in parallel.
+      const results = await Promise.all(
+        MESSAGE_CATEGORIES.map(async (category) => {
+          try {
+            const response = await fetch(`/data/messages/${category}.xml`, { cache: 'no-cache' });
+            if (!response.ok) {
+              loadErrors.push(`${category}: HTTP ${response.status}`);
+              return [];
+            }
+            const xmlText = await response.text();
+            const parseResult = parseMessagesXml(xmlText);
+            if (parseResult.error) {
+              loadErrors.push(`${category}: ${parseResult.error}`);
+              return [];
+            }
+            return parseResult.messages.map(m => new MessageModel(m));
+          } catch (err) {
+            loadErrors.push(`${category}: ${err?.message || 'Lỗi kết nối'}`);
+            return [];
           }
-        } else {
-          console.warn('Không thể tải file XML (HTTP ' + response.status + ')');
-          this.xmlLoadError = `HTTP ${response.status}: Không tìm thấy file dữ liệu XML.`;
+        })
+      );
+
+      xmlMessages = results.flat();
+      if (loadErrors.length > 0) {
+        console.warn('Lỗi khi tải dữ liệu XML theo danh mục:', loadErrors);
+        if (xmlMessages.length === 0) {
+          this.xmlLoadError = loadErrors.join('; ');
         }
-      } catch (err) {
-        console.warn('Lỗi khi fetch messages.xml:', err);
-        this.xmlLoadError = 'Lỗi kết nối khi tải dữ liệu XML.';
       }
 
       // Resilient fallback if fetch is blocked or returns empty
@@ -154,15 +176,22 @@ class MessageRepository {
    * Returns a random message from the published pool
    * Guarantees hidden, deleted, or pending messages are NEVER selected
    * @param {string} [excludeId]
+   * @param {{ excludeCategories?: string[] }} [options] - e.g. excludeCategories: ['family']
+   *   to skip letters addressed to a specific named relation (mẹ/bố/bà...), which read
+   *   oddly under a generic "a message for you" framing shown to an anonymous visitor.
    * @returns {MessageModel|null}
    */
-  getRandomMessage(excludeId = null) {
-    const publicPool = this.getPublicMessages();
+  getRandomMessage(excludeId = null, { excludeCategories = [] } = {}) {
+    let publicPool = this.getPublicMessages();
+    if (excludeCategories.length > 0) {
+      const filtered = publicPool.filter(m => !excludeCategories.includes(m.category));
+      if (filtered.length > 0) publicPool = filtered;
+    }
     if (publicPool.length === 0) return null;
-    const pool = excludeId 
+    const pool = excludeId
       ? publicPool.filter(m => m.id !== excludeId)
       : publicPool;
-    
+
     if (pool.length === 0) return publicPool[0];
     const index = Math.floor(Math.random() * pool.length);
     return pool[index];

@@ -6,18 +6,22 @@
 import { messageRepository } from '../data/message-repository.js';
 import { renderCardDOM } from '../components/card-renderer.js';
 import { TEMPLATES } from '../components/template-gallery.js';
-import { isColorDark, ensureLegibleTextColor } from '../utils/color-utils.js';
 import { app } from '../app.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Initialize repository
   const messages = await messageRepository.init();
 
+  // Random picks shown without context (hero CTA, daily envelope) should read
+  // as "a message for you" — skip letters addressed to a specific named
+  // relation (mẹ/bố/bà...), which feel out of place under that framing.
+  const RANDOM_SAFE_EXCLUDE = { excludeCategories: ['family'] };
+
   // 1. Hero Random Read CTA Button
   const heroRandomBtn = document.getElementById('hero-random-btn');
   if (heroRandomBtn) {
     heroRandomBtn.addEventListener('click', () => {
-      const randomMsg = messageRepository.getRandomMessage();
+      const randomMsg = messageRepository.getRandomMessage(null, RANDOM_SAFE_EXCLUDE);
       if (randomMsg) {
         app.openReaderModal(randomMsg);
       }
@@ -31,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (envelope && openPrompt && letterSheet) {
     // Pick an inspiring daily message
-    const dailyMsg = messageRepository.getRandomMessage();
+    const dailyMsg = messageRepository.getRandomMessage(null, RANDOM_SAFE_EXCLUDE);
 
     envelope.addEventListener('click', () => {
       if (!envelope.classList.contains('opened')) {
@@ -39,40 +43,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         openPrompt.style.display = 'none';
 
         if (dailyMsg) {
-          const bg = dailyMsg.design.background || '#FAF4EB';
-          const isDark = isColorDark(bg);
-          const textColor = ensureLegibleTextColor(bg, dailyMsg.design.textColor || (isDark ? '#F4E8CE' : '#2E231C'));
+          // Reuse the same polished card component used everywhere else on the
+          // site (pattern texture, stickers, typography, quick actions) instead
+          // of a hand-rolled, visually flat inline template.
+          // The letter sheet starts as `position: absolute; inset: 0` so it sits
+          // exactly behind the closed envelope's flap/seal. Once opened, take it
+          // out of that fixed box and into normal flow so its real content height
+          // (which varies by message length) can push .envelope-card taller via
+          // its own `.opened { height: auto }` rule, instead of being clipped.
+          letterSheet.style.position = 'relative';
+          letterSheet.style.inset = 'auto';
+          letterSheet.style.background = 'transparent';
+          letterSheet.innerHTML = '';
 
-          letterSheet.style.background = bg;
-          letterSheet.style.color = textColor;
-          letterSheet.className = `template-${dailyMsg.design.template || 'letter-vintage'}` + (isDark ? ' is-dark-card' : '');
+          const cardEl = renderCardDOM(dailyMsg, {
+            isInteractive: true,
+            onOpenReader: (m) => app.openReaderModal(m)
+          });
+          cardEl.classList.add('envelope-letter-reveal');
+          cardEl.style.boxShadow = 'none';
+          cardEl.style.border = 'none';
 
-          letterSheet.innerHTML = `
-            <div style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; text-align: ${dailyMsg.design.textAlign || 'left'}; color: ${textColor};">
-              <div>
-                <div class="unboxed-meta" style="margin-bottom: 0.75rem; color: ${textColor}; opacity: 0.85;">
-                  <span style="font-weight: 600;">${dailyMsg.categoryName}</span>
-                  <span class="meta-separator" style="color: ${textColor}; opacity: 0.5;">·</span>
-                  <span>${dailyMsg.emotion}</span>
-                </div>
-                <p style="font-family: var(--font-serif); font-size: 1.18rem; line-height: 1.8; color: ${textColor}; font-weight: 500; font-style: italic;">
-                  "${dailyMsg.content}"
-                </p>
-              </div>
-              <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid ${isDark ? 'rgba(244, 232, 206, 0.2)' : 'rgba(0,0,0,0.08)'}; padding-top: 0.75rem; margin-top: 1rem;">
-                <span style="font-size: 0.875rem; color: ${textColor}; opacity: 0.85; font-style: italic;">— ${dailyMsg.alias || 'Một người lạ'}</span>
-                <button type="button" class="btn btn-secondary btn-sm" id="daily-read-full-btn" style="${isDark ? 'background: rgba(255,255,255,0.15); color: #F4E8CE; border-color: rgba(244,232,206,0.3);' : ''}">Đọc chi tiết</button>
-              </div>
-            </div>
-          `;
-
-          const readFullBtn = letterSheet.querySelector('#daily-read-full-btn');
-          if (readFullBtn) {
-            readFullBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              app.openReaderModal(dailyMsg);
-            });
-          }
+          letterSheet.appendChild(cardEl);
         }
       }
     });
@@ -81,7 +73,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 3. Render Latest Messages (4 cards)
   const latestGrid = document.getElementById('latest-messages-grid');
   if (latestGrid) {
-    const recent = messages.slice(0, 4);
+    const recent = [...messages]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 4);
     latestGrid.innerHTML = '';
     recent.forEach(msg => {
       const cardEl = renderCardDOM(msg, {
@@ -95,8 +89,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Render Template Showcase
   const templateShowcase = document.getElementById('template-showcase-grid');
   if (templateShowcase) {
+    // Each template declares its own `font` (serif/handwriting/sans/mono); preview
+    // the name in that actual font so the showcase itself reads as varied/typographic.
+    const FONT_VAR_BY_KEY = {
+      serif: 'var(--font-serif)',
+      handwriting: 'var(--font-handwriting)',
+      sans: 'var(--font-sans)',
+      mono: 'var(--font-mono)'
+    };
+
     templateShowcase.innerHTML = '';
     TEMPLATES.slice(0, 6).forEach(tmpl => {
+      const nameFont = FONT_VAR_BY_KEY[tmpl.font] || 'var(--font-serif)';
+      const blurb = (Array.isArray(tmpl.tags) ? tmpl.tags.slice(0, 3).join(' · ') : '') || tmpl.categoryName || '';
+
       const card = document.createElement('div');
       card.className = `template-card-option`;
       card.style.height = '180px';
@@ -113,11 +119,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       card.innerHTML = `
         <div>
-          <div style="font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; margin-bottom: 0.35rem;">
+          <div style="font-family: ${nameFont}; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.35rem;">
             ${tmpl.name}
           </div>
-          <p style="font-size: 0.8125rem; opacity: 0.85; line-height: 1.4;">
-            ${tmpl.description}
+          <p style="font-family: var(--font-accent); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.7; line-height: 1.4;">
+            ${blurb}
           </p>
         </div>
         <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 0.75rem;">

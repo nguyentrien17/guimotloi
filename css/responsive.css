@@ -43,6 +43,12 @@
     font-size: 1.15rem;
   }
 
+  /* Referenced in admin.html to drop button text and keep icon-only
+     controls once the header gets too narrow for full labels. */
+  .hide-mobile {
+    display: none;
+  }
+
   .page-section {
     padding-top: 3rem;
     padding-bottom: 3rem;

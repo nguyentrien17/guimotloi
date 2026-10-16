@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages version="1.0">
+  <message id="msg-010">
+    <content>Tôi đã từng nghĩ mình không thể vượt qua nổi kỳ thi ấy và sự kỳ vọng của cả gia đình. Cảm ơn những ngày giông bão đã tôi luyện nên một tôi vững vàng như hôm nay.</content>
+    <category>hope</category>
+    <categoryName>Hy vọng</categoryName>
+    <emotion>🌈</emotion>
+    <alias>Người đang bước tiếp</alias>
+    <createdAt>2026-10-10T09:30:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>healing-glow</template>
+      <background>#E7F3F5</background>
+      <textColor>#13343C</textColor>
+      <font>sans</font>
+      <pattern>dots</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="🌈" x="82" y="16" scale="1.1" rotation="0"/>
+        <sticker emoji="☀️" x="18" y="78" scale="1.1" rotation="10"/>
+      </stickers>
+    </design>
+  </message>
+
+  <message id="msg-016">
+    <content>Có những nỗi đau không thể cất thành tiếng, chỉ có thể nuốt ngược vào trong. Nhưng tin mình đi, sau cơn mưa rào dai dẳng, bầu trời nhất định sẽ lại xanh trong.</content>
+    <category>hope</category>
+    <categoryName>Hy vọng</categoryName>
+    <emotion>🌱</emotion>
+    <alias>Một linh hồn kiên cường</alias>
+    <createdAt>2026-10-04T07:50:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>healing-glow</template>
+      <background>#EAF3EE</background>
+      <textColor>#142F1E</textColor>
+      <font>serif</font>
+      <pattern>dots</pattern>
+      <textAlign>center</textAlign>
+      <stickers>
+        <sticker emoji="🌱" x="50" y="18" scale="1.2" rotation="0"/>
+        <sticker emoji="🕊️" x="82" y="76" scale="1.0" rotation="10"/>
+      </stickers>
+    </design>
+  </message>
+</messages>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages version="1.0">
+  <message id="msg-007">
+    <content>Xin lỗi vì đã rời đi không một lời từ biệt. Không phải vì hết thương, mà vì mình nhận ra sự hiện diện của mình lúc ấy chỉ mang lại cho bạn thêm gánh nặng.</content>
+    <category>apology</category>
+    <categoryName>Lời xin lỗi</categoryName>
+    <emotion>💔</emotion>
+    <alias>Kẻ ngốc</alias>
+    <createdAt>2026-10-11T21:45:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>antique-candle</template>
+      <background>#211D22</background>
+      <textColor>#F3E5D4</textColor>
+      <font>serif</font>
+      <pattern>none</pattern>
+      <textAlign>center</textAlign>
+      <stickers>
+        <sticker emoji="🕯️" x="50" y="15" scale="1.2" rotation="0"/>
+      </stickers>
+    </design>
+  </message>
+</messages>

@@ -601,7 +601,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         emotion: state.emotion,
         alias: state.alias || 'Một người lạ',
         createdAt: new Date().toISOString(),
-        getFormattedDate: () => 'Hôm nay',
+        getFormattedDate: () => new Date().toLocaleDateString('vi-VN', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        }),
         design: state.design
       });
     });

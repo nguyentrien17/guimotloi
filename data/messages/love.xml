@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages version="1.0">
+  <message id="msg-003">
+    <content>Hôm nay trời Hà Nội mưa to lắm. Mình đi ngang qua quán cà phê góc phố quen, bất giác gọi hai ly như thói quen cũ. Mong ở nơi phương xa, cậu luôn được bình yên.</content>
+    <category>love</category>
+    <categoryName>Tình yêu</categoryName>
+    <emotion>🌧️</emotion>
+    <alias>Người ở lại góc phố</alias>
+    <createdAt>2026-10-13T19:40:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>postcard-travel</template>
+      <background>#EAF0F6</background>
+      <textColor>#172635</textColor>
+      <font>handwriting</font>
+      <pattern>none</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="📮" x="80" y="14" scale="1.2" rotation="6"/>
+        <sticker emoji="🌧️" x="22" y="78" scale="1.0" rotation="-8"/>
+      </stickers>
+    </design>
+  </message>
+
+  <message id="msg-011">
+    <content>Tớ thích cậu từ những chiều mùa thu đạp xe chung đường về. Cậu cứ mải mê ngắm hoàng hôn, còn tớ thì mải ngắm nhìn nụ cười của cậu.</content>
+    <category>love</category>
+    <categoryName>Tình yêu</categoryName>
+    <emotion>💗</emotion>
+    <alias>Mối tình đầu áo trắng</alias>
+    <createdAt>2026-10-09T17:15:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>sunset-cloud</template>
+      <background>#FDEEE5</background>
+      <textColor>#451D16</textColor>
+      <font>handwriting</font>
+      <pattern>none</pattern>
+      <textAlign>center</textAlign>
+      <stickers>
+        <sticker emoji="🚲" x="18" y="76" scale="1.1" rotation="-6"/>
+        <sticker emoji="💗" x="82" y="18" scale="1.1" rotation="12"/>
+      </stickers>
+    </design>
+  </message>
+</messages>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages version="1.0">
+  <message id="msg-002">
+    <content>Con xin lỗi mẹ vì những lần gắt gỏng sau một ngày làm việc mệt mỏi bên ngoài. Mẹ luôn để phần canh ấm, còn con chỉ để lại cho mẹ những lời cộc lốc.</content>
+    <category>family</category>
+    <categoryName>Gia đình</categoryName>
+    <emotion>🤍</emotion>
+    <alias>Đứa con vụng về</alias>
+    <createdAt>2026-10-14T14:30:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>letter-vintage</template>
+      <background>#FAF4EB</background>
+      <textColor>#2E231C</textColor>
+      <font>serif</font>
+      <pattern>ruled</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="🕊️" x="82" y="80" scale="1.0" rotation="0"/>
+        <sticker emoji="🌷" x="15" y="15" scale="1.1" rotation="8"/>
+      </stickers>
+    </design>
+  </message>
+
+  <message id="msg-008">
+    <content>Bố à, lưng bố còng thêm nhiều rồi, tóc cũng bạc trắng cả hai bên mai. Con đi làm xa ít khi gọi điện, nhưng lúc nào cũng mong bố ăn ngon ngủ sâu giấc.</content>
+    <category>family</category>
+    <categoryName>Gia đình</categoryName>
+    <emotion>🤍</emotion>
+    <alias>Con gái út</alias>
+    <createdAt>2026-10-11T11:15:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>botanical-garden</template>
+      <background>#EEF4EC</background>
+      <textColor>#192B1D</textColor>
+      <font>serif</font>
+      <pattern>ruled</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="🌿" x="82" y="76" scale="1.1" rotation="10"/>
+        <sticker emoji="🍵" x="18" y="18" scale="1.0" rotation="0"/>
+      </stickers>
+    </design>
+  </message>
+
+  <message id="msg-013">
+    <content>Cảm ơn bà nội vì nồi cháo đậu xanh thơm lừng những chiều con sốt cao thời thơ ấu. Bây giờ con lớn rồi, nhưng không nơi nào cho con cảm giác bình yên như căn bếp của bà.</content>
+    <category>family</category>
+    <categoryName>Gia đình</categoryName>
+    <emotion>🤍</emotion>
+    <alias>Cháu nội của bà</alias>
+    <createdAt>2026-10-07T15:20:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>letter-vintage</template>
+      <background>#FAF4EB</background>
+      <textColor>#33251A</textColor>
+      <font>serif</font>
+      <pattern>ruled</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="🌾" x="82" y="78" scale="1.1" rotation="8"/>
+        <sticker emoji="🍵" x="16" y="20" scale="1.0" rotation="0"/>
+      </stickers>
+    </design>
+  </message>
+</messages>

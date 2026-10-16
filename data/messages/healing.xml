@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages version="1.0">
+  <message id="msg-004">
+    <content>Gửi tôi của tuổi 25: Bạn đã vất vả nhiều rồi. Dù đoạn đường vừa qua có chông chênh thế nào, đừng quên rằng bạn đã cố gắng hết sức từng ngày.</content>
+    <category>healing</category>
+    <categoryName>Chữa lành</categoryName>
+    <emotion>🌻</emotion>
+    <alias>Chính mình</alias>
+    <createdAt>2026-10-13T22:10:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>sunset-cloud</template>
+      <background>#FDEEE5</background>
+      <textColor>#421F17</textColor>
+      <font>serif</font>
+      <pattern>dots</pattern>
+      <textAlign>center</textAlign>
+      <stickers>
+        <sticker emoji="🌻" x="82" y="75" scale="1.2" rotation="15"/>
+        <sticker emoji="☁️" x="16" y="20" scale="1.1" rotation="0"/>
+      </stickers>
+    </design>
+  </message>
+
+  <message id="msg-012">
+    <content>Xin lỗi chính bản thân mình vì đã ép uổng mình vào những tiêu chuẩn của người khác, sống để làm vừa lòng tất cả mọi người trừ chính trái tim mình.</content>
+    <category>healing</category>
+    <categoryName>Chữa lành</categoryName>
+    <emotion>🕊️</emotion>
+    <alias>Tự thức tỉnh</alias>
+    <createdAt>2026-10-08T23:50:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>minimal-paper</template>
+      <background>#FAF9F6</background>
+      <textColor>#221D18</textColor>
+      <font>serif</font>
+      <pattern>ruled</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="🕊️" x="78" y="18" scale="1.2" rotation="0"/>
+      </stickers>
+    </design>
+  </message>
+</messages>

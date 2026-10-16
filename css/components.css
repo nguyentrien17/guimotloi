@@ -67,6 +67,45 @@
   font-size: 1.0625rem;
 }
 
+/* Hero CTA pair — a bolder, pill-shaped treatment for the homepage's primary
+   calls to action, so they stand out more than a regular .btn. */
+.btn-cta-primary {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #3a2a2f 0%, #1c1917 55%, #2b2522 100%);
+  border-color: transparent;
+  box-shadow: 0 10px 28px -8px rgba(140, 78, 94, 0.45);
+}
+
+.btn-cta-primary:hover {
+  background: linear-gradient(135deg, #4a3238 0%, #2b2522 55%, #3a2a2f 100%);
+  border-color: transparent;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 16px 36px -8px rgba(140, 78, 94, 0.55);
+}
+
+.btn-cta-secondary {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #FDF2F4 0%, #F1DCE2 100%);
+  border: 1.5px solid var(--color-dusty-rose);
+  color: var(--color-deep-rose);
+  box-shadow: var(--shadow-card);
+}
+
+.btn-cta-secondary:hover {
+  background: linear-gradient(135deg, #FBE5EB 0%, #E8BCC8 100%);
+  border-color: var(--color-deep-rose);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-float);
+}
+
 .icon-btn {
   display: inline-flex;
   align-items: center;
@@ -216,9 +255,11 @@
 }
 
 .card-footer-row {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   margin-top: 1.5rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
@@ -231,32 +272,45 @@
   font-weight: 500;
   color: inherit;
   opacity: 0.95;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+/* Action buttons — sit inline at the end of the footer row (never over the
+   letter's own content). Each button carries its own small chip background
+   instead of one big pill wrapping both. */
 .card-actions-quick {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
+  margin-top: 1.8rem;
+  z-index: 6;
 }
 
 .card-quick-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.85;
+  opacity: 0.9;
   transition: opacity var(--transition-fast), transform var(--transition-fast), background-color var(--transition-fast);
-  background: rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  color: inherit;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-subtle);
+  color: var(--color-antique-ink);
 }
 
 .card-quick-btn:hover {
   opacity: 1;
   transform: scale(1.08);
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 1);
 }
 
 /* Metadata contrast inside stationery card */
@@ -307,20 +361,6 @@
 .template-antique-candle .card-author-alias {
   color: #F4E8CE;
   opacity: 0.92;
-}
-
-.stationery-card.is-dark-card .card-quick-btn,
-.template-night-sky .card-quick-btn,
-.template-antique-candle .card-quick-btn {
-  background: rgba(255, 255, 255, 0.14);
-  color: #F4E8CE;
-  border: 1px solid rgba(244, 232, 206, 0.28);
-}
-
-.stationery-card.is-dark-card .card-quick-btn:hover,
-.template-night-sky .card-quick-btn:hover,
-.template-antique-candle .card-quick-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
 }
 
 /* --------------------------------------------------------------------------
@@ -377,6 +417,13 @@
   background: linear-gradient(145deg, #182035 0%, #0E1324 100%);
   color: #F4E8CE;
   border: 1px solid rgba(244, 232, 206, 0.22);
+}
+
+/* Hero Showcase Card (homepage) — soft pastel background, dark high-contrast text */
+.hero-showcase-card {
+  background: linear-gradient(135deg, #FDEEE5 0%, #F5E1E8 50%, #EAE0F5 100%);
+  color: var(--color-antique-ink);
+  border: 1px solid rgba(28, 25, 23, 0.08);
 }
 
 /* 4. Sunset Cloud */
@@ -439,8 +486,26 @@
   border: 1px solid rgba(243, 229, 212, 0.22);
 }
 
-/* Patterns */
-.pattern-ruled {
+/* Patterns
+   Rendered as a ::after overlay (not background-image on the element itself)
+   so they layer on top of a template's own background instead of replacing it. */
+.pattern-ruled,
+.pattern-dots,
+.pattern-stars {
+  position: relative;
+}
+
+.pattern-ruled::after,
+.pattern-dots::after,
+.pattern-stars::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pattern-ruled::after {
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
@@ -448,12 +513,12 @@
   );
 }
 
-.pattern-dots {
+.pattern-dots::after {
   background-image: radial-gradient(rgba(114, 91, 88, 0.1) 1.5px, transparent 1.5px);
   background-size: 20px 20px;
 }
 
-.pattern-stars {
+.pattern-stars::after {
   background-image: radial-gradient(rgba(244, 232, 206, 0.3) 1px, transparent 1px),
                     radial-gradient(rgba(244, 232, 206, 0.2) 1.5px, transparent 1.5px);
   background-size: 32px 32px, 64px 64px;
@@ -470,6 +535,14 @@
   pointer-events: none;
   overflow: hidden;
   z-index: 5;
+}
+
+/* On read-only rendered cards (explore/read/home previews) stickers are purely
+   decorative, so keep them behind the letter's own text instead of on top of it.
+   The live sticker editor (write.html) does not use this modifier, so stickers
+   there stay above the text where they can still be clicked and dragged. */
+.sticker-container-layer.is-static {
+  z-index: 1;
 }
 
 .interactive-sticker {
@@ -515,11 +588,25 @@
   border: 1px solid #DECABA;
   overflow: hidden;
   cursor: pointer;
-  transition: transform var(--transition-gentle);
+  animation: envelope-float 4.5s ease-in-out infinite;
+  transition: transform var(--transition-gentle), box-shadow var(--transition-gentle);
 }
 
 .envelope-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 28px 48px -14px rgba(24, 32, 53, 0.22);
+  animation-play-state: paused;
+}
+
+.envelope-card.opened {
+  height: auto;
+  min-height: 320px;
+  animation: none;
+}
+
+@keyframes envelope-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
 }
 
 .envelope-flap {
@@ -558,12 +645,39 @@
   font-size: 1.25rem;
   z-index: 5;
   transition: transform var(--transition-gentle), opacity var(--transition-gentle);
+  animation: wax-seal-pulse 2.4s ease-in-out infinite;
 }
 
 .envelope-card.opened .wax-seal {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.6);
   pointer-events: none;
+  animation: none;
+}
+
+@keyframes wax-seal-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(107, 29, 46, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.2), 0 0 0 0 rgba(158, 56, 77, 0.35);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(107, 29, 46, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 0 0 10px rgba(158, 56, 77, 0);
+  }
+}
+
+/* Letter reveal: slides up and fades in as the envelope opens */
+.envelope-letter-reveal {
+  animation: letter-reveal-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes letter-reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --------------------------------------------------------------------------

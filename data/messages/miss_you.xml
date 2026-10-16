@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages version="1.0">
+  <message id="msg-001">
+    <content>Ước gì ngày tốt nghiệp hôm ấy, mình đã đủ dũng khí bước đến nói với cậu một câu: Cảm ơn vì đã là một phần thanh xuân rực rỡ nhất của mình.</content>
+    <category>miss_you</category>
+    <categoryName>Nỗi nhớ</categoryName>
+    <emotion>🌙</emotion>
+    <alias>Một người bạn cùng bàn</alias>
+    <createdAt>2026-10-14T08:15:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>night-sky</template>
+      <background>#182035</background>
+      <textColor>#F4E8CE</textColor>
+      <font>serif</font>
+      <pattern>stars</pattern>
+      <textAlign>center</textAlign>
+      <stickers>
+        <sticker emoji="✨" x="78" y="16" scale="1.1" rotation="12"/>
+        <sticker emoji="🌙" x="18" y="22" scale="1.2" rotation="-10"/>
+      </stickers>
+    </design>
+  </message>
+
+  <message id="msg-014">
+    <content>Chúng ta từng hứa sẽ cùng nhau đi xem cực quang ở Bắc Âu. Bây giờ cả hai đều đã có cuộc sống riêng, nhưng mỗi lần nhìn ảnh tuyết trắng, tôi vẫn nhớ lời hẹn năm 22 tuổi.</content>
+    <category>miss_you</category>
+    <categoryName>Nỗi nhớ</categoryName>
+    <emotion>❄️</emotion>
+    <alias>Người giữ lời hẹn</alias>
+    <createdAt>2026-10-06T20:10:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>night-sky</template>
+      <background>#141E2E</background>
+      <textColor>#EDF4FA</textColor>
+      <font>serif</font>
+      <pattern>stars</pattern>
+      <textAlign>center</textAlign>
+      <stickers>
+        <sticker emoji="❄️" x="80" y="18" scale="1.1" rotation="0"/>
+        <sticker emoji="🌌" x="18" y="76" scale="1.2" rotation="-5"/>
+      </stickers>
+    </design>
+  </message>
+</messages>

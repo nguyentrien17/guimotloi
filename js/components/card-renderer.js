@@ -206,15 +206,20 @@ export function renderCardDOM(message, { isInteractive = true, onOpenReader = nu
 
   // 4. Stickers layer
   const stickersLayer = document.createElement('div');
-  stickersLayer.className = 'sticker-container-layer';
+  stickersLayer.className = 'sticker-container-layer is-static';
   if (Array.isArray(message.design.stickers)) {
     message.design.stickers.forEach((stk, idx) => {
       const sEl = document.createElement('div');
       sEl.className = 'interactive-sticker';
       sEl.style.pointerEvents = 'none';
       sEl.textContent = stk.emoji;
+      // The header row always renders its own emotion icon in the top-right
+      // corner; nudge any decorative sticker placed in that same reserved
+      // zone further down so it doesn't visually double up with it.
+      const inHeaderZone = stk.x >= 65 && stk.y <= 28;
+      const safeY = inHeaderZone ? Math.min(stk.y + 22, 92) : stk.y;
       sEl.style.left = `${stk.x}%`;
-      sEl.style.top = `${stk.y}%`;
+      sEl.style.top = `${safeY}%`;
       sEl.style.fontSize = `${26 * (stk.scale || 1)}px`;
       sEl.style.transform = `translate(-50%, -50%) rotate(${stk.rotation || 0}deg)`;
       sEl.style.zIndex = idx + 1;

@@ -135,10 +135,12 @@ class AdminRepository {
       // Server API unreachable, fallback to client contract check for development
     }
 
-    // 2. Resilient dev/demo fallback:
-    // Credentials for test/evaluation in AI Studio environment:
-    // User: admin / Pass: quan-tri-vien-2026
-    if (username.trim() === 'admin' && (password === 'quan-tri-vien-2026' || password === 'admin123')) {
+    // 2. Local-dev-only fallback. `import.meta.env.DEV` is replaced with the
+    // literal `false` by Vite in a production build (`vite build`), so this
+    // entire block — hardcoded credentials included — is dead-code-eliminated
+    // and never ships in the deployed bundle. In production, login requires
+    // the real /api/admin/auth/login backend above.
+    if (import.meta.env.DEV && username.trim() === 'admin' && password === 'dev-only-local-admin') {
       const session = {
         token: `dev-token-${Date.now()}-${Math.random().toString(36).substring(2)}`,
         username: 'admin',

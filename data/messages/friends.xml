@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages version="1.0">
+  <message id="msg-006">
+    <content>Chúng mình từng thân thiết đến mức tưởng chừng chẳng thể tách rời. Vậy mà chỉ một hiểu lầm không ai chịu mở lời, chúng ta đã im lặng trôi qua đời nhau ngót nghét 4 năm.</content>
+    <category>friends</category>
+    <categoryName>Bạn bè</categoryName>
+    <emotion>🥹</emotion>
+    <alias>Người bạn cũ</alias>
+    <createdAt>2026-10-12T16:20:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>secret-diary</template>
+      <background>#F5EFE6</background>
+      <textColor>#33271D</textColor>
+      <font>serif</font>
+      <pattern>dots</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="📜" x="82" y="20" scale="1.1" rotation="5"/>
+        <sticker emoji="🍂" x="18" y="78" scale="1.0" rotation="-15"/>
+      </stickers>
+    </design>
+  </message>
+</messages>

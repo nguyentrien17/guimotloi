@@ -784,3 +784,31 @@
   color: var(--color-antique-ink);
   line-height: 1.5;
 }
+
+/* --------------------------------------------------------------------------
+   Mobile Admin Header — loaded after responsive.css, so overrides belong
+   here rather than there to win the cascade against the base rules above.
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 0.625rem 0.85rem;
+  }
+
+  .admin-badge-pill {
+    display: none;
+  }
+
+  .admin-logo-mark {
+    white-space: nowrap;
+    font-size: 1.05rem;
+  }
+
+  .admin-brand-group {
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .admin-nav-actions {
+    gap: 0.35rem;
+  }
+}

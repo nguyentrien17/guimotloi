@@ -106,17 +106,17 @@
             <div>
               <span class="section-kicker">Unspoken · Không gian cho những lời chưa nói</span>
               <h1 class="section-title" style="font-size: clamp(2.4rem, 4.5vw, 3.8rem); line-height: 1.15; margin-bottom: 1.25rem;">
-                Có những điều,<br />ta chỉ dám viết ra.
+                Có những điều,<br />ta chỉ dám <span style="font-family: var(--font-handwriting); font-weight: 600; color: var(--color-dusty-rose); font-size: 1.15em;">viết ra</span>.
               </h1>
               <p class="section-description" style="font-size: 1.125rem; max-width: 540px; margin-bottom: 2rem;">
                 Mỗi người đều có một điều chưa nói. Hãy để nó được viết ra ở nơi không ai biết bạn là ai, nhưng tất cả đều lắng nghe bằng sự đồng cảm dịu dàng.
               </p>
               <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                <a href="write.html" class="btn btn-primary btn-lg">
+                <a href="write.html" class="btn btn-primary btn-lg btn-cta-primary">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                   Viết điều chưa nói
                 </a>
-                <button type="button" class="btn btn-secondary btn-lg" id="hero-random-btn">
+                <button type="button" class="btn btn-secondary btn-lg btn-cta-secondary" id="hero-random-btn">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"></path></svg>
                   Đọc một lời ngẫu nhiên
                 </button>
@@ -134,29 +134,29 @@
 
             <!-- Hero Interactive Showcase Card -->
             <div>
-              <div class="stationery-card template-night-sky pattern-stars is-dark-card" style="max-width: 500px; margin: 0 auto; box-shadow: var(--shadow-float); transform: rotate(-1.5deg);">
+              <div class="stationery-card hero-showcase-card pattern-stars" style="max-width: 500px; margin: 0 auto; box-shadow: var(--shadow-float); transform: rotate(-1.5deg);">
                 <div class="stationery-card-inner" style="min-height: 320px;">
                   <div class="card-header-row">
-                    <div class="unboxed-meta" style="color: #F4E8CE; opacity: 0.92; font-weight: 500;">
+                    <div class="unboxed-meta" style="color: var(--color-antique-ink); opacity: 0.85; font-weight: 500;">
                       <span>Nỗi nhớ</span>
-                      <span class="meta-separator" style="color: #F4E8CE; opacity: 0.5;">·</span>
-                      <span>Hôm nay</span>
+                      <span class="meta-separator" style="color: var(--color-antique-ink); opacity: 0.45;">·</span>
+                      <span>14/10/2026</span>
                     </div>
                     <div class="card-emotion-indicator">🌙</div>
                   </div>
                   <div class="card-content-area">
-                    <p class="card-body-text" style="font-family: var(--font-serif); font-size: 1.25rem; text-align: center; color: #F4E8CE; line-height: 1.8;">
+                    <p class="card-body-text" style="font-family: var(--font-handwriting); font-size: 1.55rem; text-align: center; color: var(--color-antique-ink); font-weight: 600; line-height: 1.7;">
                       "Ước gì ngày tốt nghiệp hôm ấy, mình đã đủ dũng khí bước đến nói với cậu một câu: Cảm ơn vì đã là một phần thanh xuân rực rỡ nhất của mình."
                     </p>
                   </div>
-                  <div class="card-footer-row" style="border-top-color: rgba(244, 232, 206, 0.15);">
-                    <span class="card-author-alias" style="color: #F4E8CE;">— Một người bạn cùng bàn</span>
-                    <a href="write.html" class="btn btn-secondary btn-sm" style="background: rgba(255,255,255,0.15); color: #F4E8CE; border: 1px solid rgba(244,232,206,0.3); font-size: 0.75rem;">
+                  <div class="card-footer-row" style="border-top-color: rgba(28, 25, 23, 0.12);">
+                    <span class="card-author-alias" style="color: var(--color-antique-ink);">— Một người bạn cùng bàn</span>
+                    <a href="write.html" class="btn btn-secondary btn-sm" style="background: rgba(255,255,255,0.6); color: var(--color-antique-ink); border: 1px solid rgba(28,25,23,0.15); font-size: 0.75rem;">
                       Tự tạo thiệp như này
                     </a>
                   </div>
                 </div>
-                <div class="sticker-container-layer">
+                <div class="sticker-container-layer is-static">
                   <div class="interactive-sticker" style="left: 82%; top: 18%; font-size: 28px; transform: translate(-50%, -50%) rotate(12deg); pointer-events: none;">✨</div>
                   <div class="interactive-sticker" style="left: 18%; top: 80%; font-size: 28px; transform: translate(-50%, -50%) rotate(-8deg); pointer-events: none;">🌸</div>
                 </div>
@@ -184,7 +184,7 @@
               <div id="envelope-letter-content" style="position: absolute; inset: 0; background-color: var(--color-warm-paper); z-index: 2; border-radius: var(--radius-md);">
                 <div id="envelope-open-prompt" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 0.75rem; color: var(--color-antique-ink);">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-                  <span style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500;">Bấm vào đây để mở phong thư</span>
+                  <span style="font-family: var(--font-handwriting); font-size: 1.5rem; font-weight: 600;">Bấm vào đây để mở phong thư</span>
                   <span style="font-size: 0.8125rem; color: var(--color-ink-subtle);">Mỗi lần mở là một lời nhắn được chọn ngẫu nhiên</span>
                 </div>
               </div>
@@ -247,23 +247,15 @@
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
             <div style="padding: 1.75rem; background-color: var(--color-white); border-radius: var(--radius-md); border: 1px solid var(--color-border-hairline);">
               <div style="font-size: 1.75rem; margin-bottom: 0.75rem;">🕊️</div>
-              <h3 style="font-family: var(--font-sans); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem;">100% Ẩn danh</h3>
+              <h3 style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem;">100% Ẩn danh</h3>
               <p style="font-size: 0.875rem; color: var(--color-ink-subtle); line-height: 1.6;">
                 Không thu thập email, họ tên hay yêu cầu tạo tài khoản. Bạn có thể tự do đặt một danh xưng tùy ý như "Một người bạn" hay "Kẻ ở lại".
               </p>
             </div>
 
             <div style="padding: 1.75rem; background-color: var(--color-white); border-radius: var(--radius-md); border: 1px solid var(--color-border-hairline);">
-              <div style="font-size: 1.75rem; margin-bottom: 0.75rem;">📜</div>
-              <h3 style="font-family: var(--font-sans); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem;">Lưu trữ minh bạch</h3>
-              <p style="font-size: 0.875rem; color: var(--color-ink-subtle); line-height: 1.6;">
-                Dữ liệu mẫu chuẩn cấu trúc XML (`messages.xml`). Lời nhắn bạn tạo được lưu cục bộ an toàn trong trình duyệt (localStorage) và hỗ trợ xuất file XML/JSON.
-              </p>
-            </div>
-
-            <div style="padding: 1.75rem; background-color: var(--color-white); border-radius: var(--radius-md); border: 1px solid var(--color-border-hairline);">
               <div style="font-size: 1.75rem; margin-bottom: 0.75rem;">🤍</div>
-              <h3 style="font-family: var(--font-sans); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem;">Văn hóa tôn trọng</h3>
+              <h3 style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem;">Văn hóa tôn trọng</h3>
               <p style="font-size: 0.875rem; color: var(--color-ink-subtle); line-height: 1.6;">
                 Không phán xét, không bình luận chỉ trích. Chúng tôi cung cấp công cụ báo cáo để loại bỏ những nội dung độc hại hoặc quấy rối.
               </p>
@@ -280,11 +272,9 @@
           <div>
             <div class="footer-brand-title">Gửi một lời</div>
             <p class="footer-brand-bio">
-              "Mỗi người đều có một điều chưa nói. Hãy để nó được viết ra." Một góc nhỏ tĩnh lặng giữa thế giới ồn ã để cất giấu và chia sẻ những cảm xúc chân thật nhất.
+              <span style="font-family: var(--font-handwriting); font-size: 1.15rem; font-weight: 600; color: var(--color-antique-ink);">"Mỗi người đều có một điều chưa nói. Hãy để nó được viết ra."</span><br />
+              Một góc nhỏ tĩnh lặng giữa thế giới ồn ã để cất giấu và chia sẻ những cảm xúc chân thật nhất.
             </p>
-            <div class="footer-meta-box">
-              <strong>Về kiến trúc dữ liệu:</strong> Website sử dụng XML chuẩn hóa và công nghệ JavaScript thuần (ES6+), tách biệt tầng Model và Repository để sẵn sàng đồng bộ API trong tương lai.
-            </div>
           </div>
 
           <div>
@@ -313,9 +303,6 @@
             <ul class="footer-links-list">
               <li><a href="read.html">Nguyên tắc ẩn danh</a></li>
               <li><a href="write.html">Xuất thiệp ảnh PNG</a></li>
-              <li><a href="write.html">Tải cấu hình XML</a></li>
-              <li><a href="explore.html">Báo cáo nội dung</a></li>
-              <li><a href="admin.html" style="color: var(--color-dusty-rose);">Quản trị &amp; Kiểm duyệt</a></li>
             </ul>
           </div>
         </div>

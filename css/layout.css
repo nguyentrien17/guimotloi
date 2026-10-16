@@ -64,8 +64,10 @@
 }
 
 .nav-link {
-  font-size: 0.9375rem;
+  font-family: var(--font-accent);
+  font-size: 0.875rem;
   font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--color-ink-muted);
   white-space: nowrap;
   flex-shrink: 0;
@@ -164,9 +166,10 @@
 }
 
 .section-kicker {
+  font-family: var(--font-accent);
   font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-dusty-rose);
   margin-bottom: 0.5rem;
@@ -174,6 +177,8 @@
 }
 
 .section-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
   font-size: clamp(1.85rem, 3.5vw, 2.75rem);
   line-height: 1.18;
   color: var(--color-antique-ink);

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages version="1.0">
+  <message id="msg-005">
+    <content>Cảm ơn anh bác sĩ trực ca đêm ở viện K năm ngoái. Nụ cười và lời động viên "Cố lên cô bé, mọi chuyện rồi sẽ ổn" lúc 3 giờ sáng đã cứu rỗi cả tâm hồn em khi ấy.</content>
+    <category>gratitude</category>
+    <categoryName>Lời cảm ơn</categoryName>
+    <emotion>🙏</emotion>
+    <alias>Cô bé phòng 402</alias>
+    <createdAt>2026-10-12T10:00:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>minimal-paper</template>
+      <background>#FAF9F6</background>
+      <textColor>#1E2530</textColor>
+      <font>serif</font>
+      <pattern>none</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="✨" x="80" y="18" scale="1.0" rotation="0"/>
+        <sticker emoji="🌿" x="20" y="80" scale="1.1" rotation="-12"/>
+      </stickers>
+    </design>
+  </message>
+
+  <message id="msg-015">
+    <content>Cảm ơn người tài xế công nghệ tốt bụng đã quay xe lại gần 5 cây số giữa trời trưa nắng gắt để trả lại cho mình chiếc ví đánh rơi có hồ sơ bệnh án.</content>
+    <category>gratitude</category>
+    <categoryName>Lời cảm ơn</categoryName>
+    <emotion>✨</emotion>
+    <alias>Vị khách may mắn</alias>
+    <createdAt>2026-10-05T13:40:00Z</createdAt>
+    <status>published</status>
+    <design>
+      <template>postcard-travel</template>
+      <background>#F1F5E8</background>
+      <textColor>#1A2B14</textColor>
+      <font>sans</font>
+      <pattern>none</pattern>
+      <textAlign>left</textAlign>
+      <stickers>
+        <sticker emoji="🛵" x="18" y="78" scale="1.1" rotation="0"/>
+        <sticker emoji="✨" x="82" y="16" scale="1.1" rotation="10"/>
+      </stickers>
+    </design>
+  </message>
+</messages>
