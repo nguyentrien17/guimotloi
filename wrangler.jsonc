@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "guimotloi",
+  "compatibility_date": "2026-10-12",
+  // Static multi-page site: serve the Vite build output as-is, no Worker
+  // script. Unknown URLs return a plain 404 (not index.html — this is not a
+  // single-page app, each page is its own .html file).
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
