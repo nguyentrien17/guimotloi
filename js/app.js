@@ -5,7 +5,7 @@
  */
 
 import { getUserSettings, updateUserSettings, recordReport } from './utils/storage.js';
-import { exportCardAsPng } from './components/card-renderer.js';
+import { exportCardAsPng, renderCardDOM } from './components/card-renderer.js';
 
 class AppController {
   constructor() {
@@ -256,14 +256,11 @@ class AppController {
     dateEl.textContent = message.getFormattedDate();
     stage.innerHTML = '';
 
-    // Import dynamic renderer to avoid circular dependency
-    import('./components/card-renderer.js').then(({ renderCardDOM }) => {
-      const card = renderCardDOM(message, { isInteractive: false });
-      card.style.boxShadow = 'none';
-      stage.appendChild(card);
-      this.readerModal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
+    const card = renderCardDOM(message, { isInteractive: false });
+    card.style.boxShadow = 'none';
+    stage.appendChild(card);
+    this.readerModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
 
   closeReaderModal() {

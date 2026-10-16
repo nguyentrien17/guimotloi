@@ -5,17 +5,17 @@ export default defineConfig(() => {
   return {
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(import.meta.dirname, '.'),
       },
     },
     build: {
       rollupOptions: {
         input: {
-          main: path.resolve(__dirname, 'index.html'),
-          write: path.resolve(__dirname, 'write.html'),
-          read: path.resolve(__dirname, 'read.html'),
-          explore: path.resolve(__dirname, 'explore.html'),
-          admin: path.resolve(__dirname, 'admin.html'),
+          main: path.resolve(import.meta.dirname, 'index.html'),
+          write: path.resolve(import.meta.dirname, 'write.html'),
+          read: path.resolve(import.meta.dirname, 'read.html'),
+          explore: path.resolve(import.meta.dirname, 'explore.html'),
+          admin: path.resolve(import.meta.dirname, 'admin.html'),
         },
       },
     },
