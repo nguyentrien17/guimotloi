@@ -1,0 +1,705 @@
+/* ==========================================================================
+   Components — Buttons, Cards, Modals, Ambient Particles & Stationery Styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Buttons (Editorial, Ergonomic, Single-Line)
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--color-antique-ink);
+  color: var(--color-cream);
+  border: 1px solid var(--color-antique-ink);
+}
+
+.btn-primary:hover {
+  background-color: #3f3938;
+  border-color: #3f3938;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-subtle);
+}
+
+.btn-secondary {
+  background-color: var(--color-white);
+  color: var(--color-antique-ink);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-cream);
+  border-color: rgba(114, 91, 88, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  color: var(--color-ink-muted);
+  background: transparent;
+}
+
+.btn-ghost:hover {
+  color: var(--color-antique-ink);
+  background-color: var(--color-surface-hover);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8125rem;
+}
+
+.btn-lg {
+  padding: 0.875rem 1.75rem;
+  font-size: 1.0625rem;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  color: var(--color-ink-muted);
+  border: 1px solid var(--color-border-hairline);
+  background-color: var(--color-white);
+  transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+  color: var(--color-antique-ink);
+  background-color: var(--color-cream);
+  border-color: var(--color-border-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   Filter Tabs & Segmented Controls (Interactive Functional Buttons)
+   -------------------------------------------------------------------------- */
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.35rem;
+  background-color: rgba(114, 91, 88, 0.05);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-hairline);
+  scrollbar-width: none;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-ink-subtle);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.filter-tab-btn:hover {
+  color: var(--color-antique-ink);
+}
+
+.filter-tab-btn.active {
+  background-color: var(--color-white);
+  color: var(--color-antique-ink);
+  box-shadow: var(--shadow-subtle);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Unboxed Metadata (Anti-Slop Standard)
+   -------------------------------------------------------------------------- */
+
+.unboxed-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-ink-subtle);
+}
+
+.meta-separator {
+  color: rgba(114, 91, 88, 0.3);
+  user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   The Stationery Card: Core Canvas Container
+   -------------------------------------------------------------------------- */
+
+.stationery-card {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border-hairline);
+  color: var(--color-antique-ink);
+}
+
+.stationery-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-float);
+}
+
+.stationery-card-inner {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.card-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  z-index: 4;
+}
+
+.card-emotion-indicator {
+  font-size: 1.6rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+}
+
+.card-content-area {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.card-body-text {
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  line-height: 1.8;
+  font-weight: 500;
+  color: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  z-index: 4;
+}
+
+.card-author-alias {
+  font-size: 0.875rem;
+  font-style: italic;
+  font-weight: 500;
+  color: inherit;
+  opacity: 0.95;
+}
+
+.card-actions-quick {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-quick-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  transition: opacity var(--transition-fast), transform var(--transition-fast), background-color var(--transition-fast);
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: inherit;
+}
+
+.card-quick-btn:hover {
+  opacity: 1;
+  transform: scale(1.08);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Metadata contrast inside stationery card */
+.stationery-card .unboxed-meta {
+  color: inherit;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.stationery-card .meta-separator {
+  color: inherit;
+  opacity: 0.45;
+}
+
+/* --------------------------------------------------------------------------
+   Dark Card Automatic Theme Overrides
+   -------------------------------------------------------------------------- */
+
+.stationery-card.is-dark-card,
+.template-night-sky,
+.template-antique-candle {
+  color: #F4E8CE;
+  border-color: rgba(244, 232, 206, 0.2);
+}
+
+.stationery-card.is-dark-card .card-footer-row,
+.template-night-sky .card-footer-row,
+.template-antique-candle .card-footer-row {
+  border-top-color: rgba(244, 232, 206, 0.2);
+}
+
+.stationery-card.is-dark-card .unboxed-meta,
+.template-night-sky .unboxed-meta,
+.template-antique-candle .unboxed-meta {
+  color: #F4E8CE;
+  opacity: 0.92;
+}
+
+.stationery-card.is-dark-card .meta-separator,
+.template-night-sky .meta-separator,
+.template-antique-candle .meta-separator {
+  color: #F4E8CE;
+  opacity: 0.55;
+}
+
+.stationery-card.is-dark-card .card-author-alias,
+.template-night-sky .card-author-alias,
+.template-antique-candle .card-author-alias {
+  color: #F4E8CE;
+  opacity: 0.92;
+}
+
+.stationery-card.is-dark-card .card-quick-btn,
+.template-night-sky .card-quick-btn,
+.template-antique-candle .card-quick-btn {
+  background: rgba(255, 255, 255, 0.14);
+  color: #F4E8CE;
+  border: 1px solid rgba(244, 232, 206, 0.28);
+}
+
+.stationery-card.is-dark-card .card-quick-btn:hover,
+.template-night-sky .card-quick-btn:hover,
+.template-antique-candle .card-quick-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Stationery Card Templates & Textures (Tuned for High Contrast)
+   -------------------------------------------------------------------------- */
+
+/* 1. Letter Vintage */
+.template-letter-vintage {
+  background-color: #FAF4EB;
+  color: #2E231C;
+  border: 1px solid #DFD2BF;
+  font-family: var(--font-serif);
+}
+.template-letter-vintage .stationery-card-inner::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  width: 50px;
+  height: 60px;
+  border: 2px dashed rgba(46, 35, 28, 0.25);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* 2. Postcard Travel */
+.template-postcard-travel {
+  background-color: #EAF0F6;
+  color: #172635;
+  border: 1px solid #BFD2E3;
+}
+.template-postcard-travel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    45deg,
+    #B22222,
+    #B22222 12px,
+    #FFFFFF 12px,
+    #FFFFFF 24px,
+    #1E3A8A 24px,
+    #1E3A8A 36px,
+    #FFFFFF 36px,
+    #FFFFFF 48px
+  );
+}
+
+/* 3. Night Sky */
+.template-night-sky {
+  background: linear-gradient(145deg, #182035 0%, #0E1324 100%);
+  color: #F4E8CE;
+  border: 1px solid rgba(244, 232, 206, 0.22);
+}
+
+/* 4. Sunset Cloud */
+.template-sunset-cloud {
+  background: linear-gradient(135deg, #FDEEE5 0%, #F5E1E8 50%, #EAE0F5 100%);
+  color: #421F17;
+  border: 1px solid #DFC4D3;
+}
+
+/* 5. Botanical Garden */
+.template-botanical-garden {
+  background: linear-gradient(135deg, #EEF4EC 0%, #F7FAF5 100%);
+  color: #192B1D;
+  border: 1px solid #CCDBC8;
+}
+
+/* 6. Minimal Paper */
+.template-minimal-paper {
+  background-color: #FAF9F6;
+  color: #1E2530;
+  border: 1px solid rgba(30, 37, 48, 0.15);
+  outline: 1px solid rgba(30, 37, 48, 0.08);
+  outline-offset: -8px;
+}
+
+/* 7. Secret Diary */
+.template-secret-diary {
+  background-color: #F5EFE6;
+  color: #33271D;
+  border: 1px solid #D6C9B7;
+}
+.template-secret-diary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 28px;
+  bottom: 0;
+  width: 2px;
+  background-color: rgba(201, 143, 157, 0.5);
+}
+
+/* 8. Gentle Love */
+.template-gentle-love {
+  background: linear-gradient(135deg, #FDF2F4 0%, #FBE5EB 100%);
+  color: #4D1C27;
+  border: 1px solid #E8BCC8;
+}
+
+/* 9. Healing Glow */
+.template-healing-glow {
+  background: linear-gradient(135deg, #E7F3F5 0%, #F2F8F9 100%);
+  color: #13343C;
+  border: 1px solid #BED8DE;
+}
+
+/* 10. Antique Candle */
+.template-antique-candle {
+  background: radial-gradient(circle at 50% 20%, #2A242A 0%, #161318 100%);
+  color: #F3E5D4;
+  border: 1px solid rgba(243, 229, 212, 0.22);
+}
+
+/* Patterns */
+.pattern-ruled {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(114, 91, 88, 0.08) 28px
+  );
+}
+
+.pattern-dots {
+  background-image: radial-gradient(rgba(114, 91, 88, 0.1) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+.pattern-stars {
+  background-image: radial-gradient(rgba(244, 232, 206, 0.3) 1px, transparent 1px),
+                    radial-gradient(rgba(244, 232, 206, 0.2) 1.5px, transparent 1.5px);
+  background-size: 32px 32px, 64px 64px;
+  background-position: 0 0, 16px 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Sticker Canvas & Floating Overlays
+   -------------------------------------------------------------------------- */
+
+.sticker-container-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.interactive-sticker {
+  position: absolute;
+  user-select: none;
+  cursor: grab;
+  touch-action: none;
+  pointer-events: auto;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter var(--transition-fast);
+}
+
+.interactive-sticker:active {
+  cursor: grabbing;
+}
+
+.interactive-sticker.selected {
+  outline: 2px dashed var(--color-dusty-rose);
+  outline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Envelope & Daily Unsaid Card Interaction
+   -------------------------------------------------------------------------- */
+
+.interactive-envelope-wrapper {
+  position: relative;
+  max-width: 520px;
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+.envelope-card {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background-color: #EBDDCA;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-envelope);
+  border: 1px solid #DECABA;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--transition-gentle);
+}
+
+.envelope-card:hover {
+  transform: translateY(-4px);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-left: 260px solid transparent;
+  border-right: 260px solid transparent;
+  border-top: 150px solid #DFCBB8;
+  transform-origin: top;
+  transition: transform var(--transition-unfold);
+  z-index: 4;
+}
+
+.envelope-card.opened .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.wax-seal {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9E384D, #6B1D2E);
+  box-shadow: 0 4px 12px rgba(107, 29, 46, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #F8DFE4;
+  font-size: 1.25rem;
+  z-index: 5;
+  transition: transform var(--transition-gentle), opacity var(--transition-gentle);
+}
+
+.envelope-card.opened .wax-seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Ambient Effects (Cherry Blossoms / Twinkling Stars)
+   -------------------------------------------------------------------------- */
+
+.ambient-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.petal {
+  position: absolute;
+  background: radial-gradient(circle, #F8DEE5 30%, #E8BDC9 100%);
+  border-radius: 150% 0 150% 0;
+  opacity: 0.5;
+  animation: petal-fall linear infinite;
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translateY(-20px) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(80px);
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Modal & Reader Overlay
+   -------------------------------------------------------------------------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(24, 32, 53, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-dialog {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  max-width: 620px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-float);
+  border: 1px solid var(--color-border-hairline);
+  transform: translateY(16px) scale(0.98);
+  transition: transform var(--transition-normal);
+}
+
+.modal-backdrop.open .modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-border-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.toast {
+  background-color: var(--color-antique-ink);
+  color: var(--color-white);
+  padding: 0.875rem 1.25rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-float);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  pointer-events: auto;
+  animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 380px;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

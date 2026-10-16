@@ -1,0 +1,638 @@
+/* ==========================================================================
+   Editor Studio Styles — Card Creator & Interactive Workspace
+   ========================================================================== */
+
+.editor-wrapper {
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  min-height: calc(100vh - var(--header-height) - 100px);
+}
+
+/* --------------------------------------------------------------------------
+   Editor Left Panel: Controls & Options
+   -------------------------------------------------------------------------- */
+
+.editor-controls-panel {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-nav-tabs {
+  display: flex;
+  background-color: var(--color-cream-subtle);
+  border-bottom: 1px solid var(--color-border-hairline);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.editor-nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.editor-tab-btn {
+  flex: 1;
+  padding: 0.875rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-ink-subtle);
+  text-align: center;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.editor-tab-btn:hover {
+  color: var(--color-antique-ink);
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.editor-tab-btn.active {
+  color: var(--color-antique-ink);
+  font-weight: 600;
+  background-color: var(--color-white);
+  border-bottom-color: var(--color-dusty-rose);
+}
+
+.editor-tab-content {
+  padding: 1.5rem;
+  display: none;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
+}
+
+.editor-tab-content.active {
+  display: flex;
+}
+
+/* Form Groups & Inputs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-antique-ink);
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--color-ink-subtle);
+  margin-top: 0.25rem;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-cream);
+  color: var(--color-antique-ink);
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.form-textarea:focus {
+  background-color: var(--color-white);
+  border-color: var(--color-dusty-rose);
+  outline: none;
+}
+
+.form-select, .form-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-cream);
+  color: var(--color-antique-ink);
+  transition: border-color var(--transition-fast);
+}
+
+.form-select:focus, .form-input:focus {
+  background-color: var(--color-white);
+  border-color: var(--color-dusty-rose);
+  outline: none;
+}
+
+.char-counter {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.75rem;
+  color: var(--color-ink-subtle);
+}
+
+.char-counter.warning {
+  color: #DC2626;
+  font-weight: 600;
+}
+
+/* Template Selector Grid */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.875rem;
+}
+
+.template-card-option {
+  position: relative;
+  padding: 1rem 0.875rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.template-card-option:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-subtle);
+}
+
+.template-card-option.active {
+  border-color: var(--color-dusty-rose);
+  box-shadow: 0 0 0 1px var(--color-dusty-rose);
+}
+
+.template-option-title {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.template-option-desc {
+  font-size: 0.775rem;
+  color: inherit;
+  opacity: 0.88;
+  line-height: 1.4;
+}
+
+.template-card-option.template-night-sky,
+.template-card-option.template-antique-candle {
+  color: #F4E8CE;
+  border: 1px solid rgba(244, 232, 206, 0.25);
+}
+
+.template-card-option.template-night-sky.active,
+.template-card-option.template-antique-candle.active {
+  border-color: #F4E8CE;
+  box-shadow: 0 0 0 1px #F4E8CE;
+}
+
+/* Color & Preset Swatches */
+.swatch-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.color-swatch-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--color-white);
+  box-shadow: 0 0 0 1px var(--color-border-subtle);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.color-swatch-btn:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch-btn.active {
+  box-shadow: 0 0 0 2px var(--color-dusty-rose);
+  transform: scale(1.1);
+}
+
+/* Typography Controls */
+.font-choice-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.font-choice-btn {
+  padding: 0.5rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xs);
+  text-align: center;
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+}
+
+.font-choice-btn.active {
+  background-color: var(--color-antique-ink);
+  color: var(--color-white);
+  border-color: var(--color-antique-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Emoji & Sticker Library
+   -------------------------------------------------------------------------- */
+
+.sticker-categories {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+
+.sticker-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.sticker-cat-btn {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-xs);
+  background-color: var(--color-cream);
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+.sticker-cat-btn.active {
+  background-color: var(--color-antique-ink);
+  color: var(--color-white);
+}
+
+.sticker-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background-color: var(--color-cream-subtle);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-hairline);
+}
+
+.sticker-picker-item {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.sticker-picker-item:hover {
+  transform: scale(1.2);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Selected Sticker Tools (Floating / Docked Bar) */
+.sticker-control-bar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+}
+
+.sticker-control-bar.visible {
+  display: flex;
+}
+
+.sticker-control-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Editor Right Panel: Live Stationery Card Preview
+   -------------------------------------------------------------------------- */
+
+.editor-preview-panel {
+  position: sticky;
+  top: calc(var(--header-height) + 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.preview-title-kicker {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-subtle);
+}
+
+.preview-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preview-card-stage {
+  position: relative;
+  width: 100%;
+  padding: 2rem;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8), rgba(243, 239, 234, 0.6));
+  border: 1px dashed rgba(114, 91, 88, 0.2);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+}
+
+.preview-card-stage .stationery-card {
+  max-width: 580px;
+  width: 100%;
+  min-height: 380px;
+}
+
+.preview-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   100+ Templates Gallery Filtering & Grid
+   -------------------------------------------------------------------------- */
+.template-category-filter-bar {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.25rem 0 0.5rem;
+  margin-bottom: 0.75rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.template-category-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.template-filter-pill {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.template-filter-pill:hover {
+  background-color: var(--color-cream-dark);
+  color: var(--color-antique-ink);
+}
+
+.template-filter-pill.active {
+  background-color: var(--color-antique-ink);
+  color: var(--color-white);
+  border-color: var(--color-antique-ink);
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.75rem;
+  max-height: 480px;
+  overflow-y: auto;
+  padding: 0.5rem 0.25rem;
+}
+
+.template-card-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border-subtle);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 110px;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.template-card-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(46, 35, 28, 0.1);
+  border-color: var(--color-dusty-rose);
+}
+
+.template-card-option.active {
+  border-color: var(--color-dusty-rose);
+  box-shadow: 0 0 0 2px var(--color-dusty-rose), 0 4px 14px rgba(201, 143, 157, 0.3);
+}
+
+.template-option-category-badge {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.template-option-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.template-option-desc {
+  font-size: 0.6875rem;
+  opacity: 0.75;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Contrast Live Meter & Anti-drowning Controls
+   -------------------------------------------------------------------------- */
+.contrast-meter-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-cream-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.contrast-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  background-color: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+  transition: all var(--transition-fast);
+}
+
+.contrast-badge.caution {
+  background-color: #FFFBEB;
+  color: #92400E;
+  border-color: #FDE68A;
+}
+
+.contrast-badge.warning {
+  background-color: #FEF2F2;
+  color: #991B1B;
+  border-color: #FECACA;
+  animation: pulseWarning 1.5s infinite;
+}
+
+@keyframes pulseWarning {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+.text-shadow-choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.text-shadow-choice-row .btn {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.65rem;
+}
+
+.text-shadow-choice-row .btn.active {
+  background-color: var(--color-antique-ink);
+  color: var(--color-white);
+  border-color: var(--color-antique-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Font Library Gallery & Fine-Tuning Sliders
+   -------------------------------------------------------------------------- */
+.font-category-filter-bar {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding: 0.25rem 0 0.5rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.font-category-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.font-gallery-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 0.25rem 0;
+}
+
+.font-item-card {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  background-color: var(--color-white);
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-align: left;
+}
+
+.font-item-card:hover {
+  border-color: var(--color-dusty-rose);
+  background-color: var(--color-cream-subtle);
+}
+
+.font-item-card.active {
+  border-color: var(--color-antique-ink);
+  background-color: var(--color-cream);
+  box-shadow: 0 0 0 1.5px var(--color-antique-ink);
+}
+
+.font-item-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-antique-ink);
+}
+
+.font-item-sample {
+  font-size: 0.8125rem;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.typography-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.typography-slider-row input[type="range"] {
+  flex: 1;
+  accent-color: var(--color-dusty-rose);
+  height: 6px;
+  cursor: pointer;
+}
+
+.typography-slider-val {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-antique-ink);
+  min-width: 44px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+

@@ -1,0 +1,277 @@
+/* ==========================================================================
+   Layout Styles — Top Bar Contract, Containers & Grid Systems
+   ========================================================================== */
+
+.site-container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.25rem, 3vw, 2.5rem);
+  padding-right: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+/* ==========================================================================
+   Top Bar Navigation Contract
+   1-Row, 3-Zones: [Brand Wordmark] - [Concise Nav Links] - [1 Primary CTA]
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--header-height);
+  background-color: rgba(250, 247, 242, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border-hairline);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+.site-header-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* Zone 1: Brand Wordmark (Single text element in display face, no subtext/pills) */
+.brand-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-antique-ink);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+
+.brand-icon-svg {
+  width: 22px;
+  height: 22px;
+  color: var(--color-dusty-rose);
+}
+
+/* Zone 2: Navigation Links (4-5 single-line links with quiet hover underlines) */
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.nav-link {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+  padding: 0.35rem 0;
+  transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--color-antique-ink);
+}
+
+.nav-link.active {
+  color: var(--color-antique-ink);
+  font-weight: 600;
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-dusty-rose);
+  border-radius: var(--radius-full);
+}
+
+/* Zone 3: Primary Action CTA */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* Mobile Nav Toggle */
+.mobile-menu-btn {
+  display: none;
+  padding: 0.5rem;
+  color: var(--color-antique-ink);
+}
+
+/* Mobile Navigation Drawer */
+.mobile-nav-panel {
+  display: none;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  background: rgba(250, 247, 242, 0.98);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border-hairline);
+  padding: 1.5rem;
+  z-index: 49;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: var(--shadow-float);
+}
+
+.mobile-nav-panel.open {
+  display: flex;
+}
+
+.mobile-nav-panel .nav-link {
+  font-size: 1.125rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+
+/* ==========================================================================
+   Section Spacing & Hero Layouts
+   ========================================================================== */
+
+.page-section {
+  padding-top: clamp(3.5rem, 6vw, 6rem);
+  padding-bottom: clamp(3.5rem, 6vw, 6rem);
+  position: relative;
+}
+
+.page-section-alt {
+  background-color: rgba(255, 255, 255, 0.55);
+  border-top: 1px solid var(--color-border-hairline);
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+
+.section-header {
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.section-header.text-center {
+  text-align: center;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-kicker {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-dusty-rose);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.section-title {
+  font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+  line-height: 1.18;
+  color: var(--color-antique-ink);
+  margin-bottom: 0.875rem;
+}
+
+.section-description {
+  font-size: 1.0625rem;
+  color: var(--color-ink-muted);
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   Site Footer
+   ========================================================================== */
+
+.site-footer {
+  border-top: 1px solid var(--color-border-hairline);
+  background-color: var(--color-warm-paper);
+  padding-top: 4.5rem;
+  padding-bottom: 3.5rem;
+  margin-top: auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.25fr;
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+}
+
+.footer-brand-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-antique-ink);
+  margin-bottom: 0.75rem;
+}
+
+.footer-brand-bio {
+  font-size: 0.9375rem;
+  color: var(--color-ink-subtle);
+  line-height: 1.7;
+  max-width: 360px;
+  margin-bottom: 1.25rem;
+}
+
+.footer-col-title {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-antique-ink);
+  margin-bottom: 1.25rem;
+}
+
+.footer-links-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-links-list a {
+  font-size: 0.9375rem;
+  color: var(--color-ink-subtle);
+  transition: color var(--transition-fast);
+}
+
+.footer-links-list a:hover {
+  color: var(--color-antique-ink);
+}
+
+.footer-meta-box {
+  padding: 1rem 1.25rem;
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-border-hairline);
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  color: var(--color-ink-subtle);
+  line-height: 1.6;
+}
+
+.footer-bottom-bar {
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--color-ink-subtle);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-bottom-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}

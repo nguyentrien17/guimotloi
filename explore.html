@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <script>
+      (function() {
+        try {
+          var _orig = (typeof window !== 'undefined' && window.fetch) ? window.fetch.bind(window) : null;
+          var _current = _orig;
+          var getter = function() { return _current; };
+          var setter = function(v) { _current = v; };
+          var targets = [];
+          if (typeof Window !== 'undefined' && Window.prototype) targets.push(Window.prototype);
+          if (typeof window !== 'undefined') {
+            targets.push(window);
+            try {
+              var p = Object.getPrototypeOf(window);
+              if (p && targets.indexOf(p) === -1) targets.push(p);
+            } catch (_) {}
+          }
+          targets.forEach(function(t) {
+            try {
+              Object.defineProperty(t, 'fetch', {
+                get: getter,
+                set: setter,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (_) {}
+          });
+        } catch (_) {}
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Khám Phá Cảm Xúc — Gửi Một Lời</title>
+    <meta name="description" content="Hành trình khám phá qua 8 cung bậc cảm xúc thầm kín: những lời chưa kịp nói, người từng thương, cha mẹ, chữa lành và những bí mật giữ kín." />
+    <meta property="og:title" content="Khám Phá Cảm Xúc — Gửi Một Lời" />
+    <meta property="og:description" content="Hành trình khám phá qua 8 cung bậc cảm xúc thầm kín." />
+    <meta property="og:type" content="website" />
+
+    <!-- Google Fonts 30+ Vietnamese Typography Suite -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@600&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600&family=Caveat:wght@500;600&family=Cinzel:wght@600&family=Comfortaa:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Dancing+Script:wght@500;600;700&family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Kalam:wght@400;700&family=Lobster&family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&family=Marck+Script&family=Merriweather:ital,wght@0,400;1,400&family=Montserrat:wght@400;500;600&family=Nunito:wght@500;600&family=Open+Sans:wght@400;500;600&family=Oswald:wght@500;600&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Prata&family=Public+Sans:wght@400;500&family=Quicksand:wght@500;600&family=Roboto:wght@400;500&family=Satisfy&family=Source+Code+Pro:wght@400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/editor.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <!-- Top Navigation Bar Contract -->
+    <header class="site-header">
+      <div class="site-container site-header-inner">
+        <!-- Zone 1: Brand Wordmark -->
+        <a href="index.html" class="brand-wordmark" aria-label="Gửi một lời — Về trang chủ">
+          <svg class="brand-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/>
+            <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/>
+          </svg>
+          <span>Gửi một lời</span>
+        </a>
+
+        <!-- Zone 2: Navigation Links -->
+        <nav class="site-nav" aria-label="Menu chính">
+          <a href="index.html" class="nav-link">Trang chủ</a>
+          <a href="write.html" class="nav-link">Viết điều chưa nói</a>
+          <a href="read.html" class="nav-link">Đọc lời nhắn</a>
+          <a href="explore.html" class="nav-link active">Khám phá cảm xúc</a>
+        </nav>
+
+        <!-- Zone 3: Primary Action CTA & Mobile Trigger -->
+        <div class="header-actions">
+          <a href="write.html" class="btn btn-primary btn-sm">Viết lời nhắn</a>
+          <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Mở danh mục điều hướng">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-panel" id="mobile-nav-panel">
+      <a href="index.html" class="nav-link">Trang chủ</a>
+      <a href="write.html" class="nav-link">Viết điều chưa nói</a>
+      <a href="read.html" class="nav-link">Đọc lời nhắn</a>
+      <a href="explore.html" class="nav-link active">Khám phá cảm xúc</a>
+    </div>
+
+    <main class="site-container" style="padding-top: 2.5rem; padding-bottom: 5rem;">
+      <!-- Page Header -->
+      <div class="section-header text-center" style="margin-bottom: 3.5rem;">
+        <span class="section-kicker">Hành trình chiêm nghiệm</span>
+        <h1 class="section-title" style="font-size: 2.6rem;">8 Cung bậc của những điều chưa nói</h1>
+        <p class="section-description" style="max-width: 680px; margin: 0 auto;">
+          Dù là nỗi nhớ một người đã xa, lời xin lỗi muộn màng, hay lời tri ân thầm lặng với cha mẹ... mọi cảm xúc đều xứng đáng có một nơi chốn để được giãi bày.
+        </p>
+      </div>
+
+      <!-- The 8 Curated Realms Container -->
+      <div id="realms-container">
+        <!-- Dynamically rendered via explore.js -->
+      </div>
+
+      <!-- Bottom Callout -->
+      <div style="background: radial-gradient(circle at 50% 50%, var(--color-warm-paper), var(--color-cream-subtle)); border: 1px solid var(--color-border-hairline); border-radius: var(--radius-lg); padding: 3rem 2rem; text-align: center; box-shadow: var(--shadow-card);">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.75rem;">Bạn cũng đang mang một điều chưa nói?</h2>
+        <p style="font-size: 1.05rem; color: var(--color-ink-muted); max-width: 520px; margin: 0 auto 1.75rem;">
+          Đừng giữ nó mãi trong lòng. Hãy trao nó vào một trang thiệp và để tâm hồn được nhẹ nhõm hơn.
+        </p>
+        <a href="write.html" class="btn btn-primary btn-lg">
+          Bắt đầu viết điều chưa nói
+        </a>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="site-container">
+        <div class="footer-bottom-bar" style="border-top: none; padding-top: 0;">
+          <div>© 2026 Gửi Một Lời — Unspoken. Khám phá 8 cung bậc cảm xúc.</div>
+          <div class="footer-bottom-nav">
+            <a href="index.html">Trang chủ</a>
+            <span>·</span>
+            <a href="write.html">Viết điều chưa nói</a>
+            <span>·</span>
+            <a href="read.html">Đọc lời nhắn</a>
+            <span>·</span>
+            <a href="admin.html">Quản trị</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Main Explore Script -->
+    <script type="module" src="/js/pages/explore.js"></script>
+  </body>
+</html>

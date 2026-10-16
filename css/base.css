@@ -1,0 +1,137 @@
+/* ==========================================================================
+   Base Styles & Reset — "Gửi một lời — Những lời chưa nói"
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-cream);
+  color: var(--color-antique-ink);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(ellipse at 15% 10%, rgba(241, 220, 226, 0.45) 0%, transparent 40%),
+    radial-gradient(ellipse at 85% 25%, rgba(221, 234, 242, 0.45) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 80%, rgba(232, 225, 242, 0.35) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Atmospheric subtle paper grain texture simulation */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(114, 91, 88, 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+main {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-soft-pink);
+  color: var(--color-antique-ink);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--color-dusty-rose);
+  outline-offset: 2px;
+}
+
+/* Typography elements */
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif);
+  font-feature-settings: "kern", "liga", "calt";
+  color: var(--color-antique-ink);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  text-wrap: balance;
+}
+
+h2, h3 {
+  text-wrap: balance;
+}
+
+p {
+  color: var(--color-ink-muted);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+button, input, textarea, select {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+}
+
+button {
+  cursor: pointer;
+  user-select: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(114, 91, 88, 0.2);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dusty-rose);
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

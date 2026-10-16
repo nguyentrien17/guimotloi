@@ -1,0 +1,6 @@
+{
+  "name": "Gửi Một Lời — Những Lời Chưa Nói",
+  "description": "Không gian trực tuyến nhẹ nhàng, riêng tư và giàu cảm xúc để gửi gắm những lời nhắn ẩn danh, đọc tâm sự của người lạ và tự tay thiết kế những tấm thiệp chứa chan cảm xúc.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <script>
+      (function() {
+        try {
+          var _orig = (typeof window !== 'undefined' && window.fetch) ? window.fetch.bind(window) : null;
+          var _current = _orig;
+          var getter = function() { return _current; };
+          var setter = function(v) { _current = v; };
+          var targets = [];
+          if (typeof Window !== 'undefined' && Window.prototype) targets.push(Window.prototype);
+          if (typeof window !== 'undefined') {
+            targets.push(window);
+            try {
+              var p = Object.getPrototypeOf(window);
+              if (p && targets.indexOf(p) === -1) targets.push(p);
+            } catch (_) {}
+          }
+          targets.forEach(function(t) {
+            try {
+              Object.defineProperty(t, 'fetch', {
+                get: getter,
+                set: setter,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (_) {}
+          });
+        } catch (_) {}
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Viết Lời Nhắn &amp; Thiết Kế Thiệp — Gửi Một Lời</title>
+    <meta name="description" content="Tự tay viết và thiết kế tấm thiệp chứa đựng những điều chưa kịp nói với phong cách riêng biệt, lưu trữ an toàn và xuất ảnh chất lượng cao." />
+    <meta property="og:title" content="Viết Lời Nhắn &amp; Thiết Kế Thiệp — Gửi Một Lời" />
+    <meta property="og:description" content="Tự tay viết và thiết kế tấm thiệp chứa đựng những điều chưa kịp nói." />
+    <meta property="og:type" content="website" />
+
+    <!-- Google Fonts 30+ Vietnamese Typography Suite -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@600&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600&family=Caveat:wght@500;600&family=Cinzel:wght@600&family=Comfortaa:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Dancing+Script:wght@500;600;700&family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Kalam:wght@400;700&family=Lobster&family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&family=Marck+Script&family=Merriweather:ital,wght@0,400;1,400&family=Montserrat:wght@400;500;600&family=Nunito:wght@500;600&family=Open+Sans:wght@400;500;600&family=Oswald:wght@500;600&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Prata&family=Public+Sans:wght@400;500&family=Quicksand:wght@500;600&family=Roboto:wght@400;500&family=Satisfy&family=Source+Code+Pro:wght@400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/editor.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+  </head>
+  <body>
+    <!-- Top Navigation Bar Contract -->
+    <header class="site-header">
+      <div class="site-container site-header-inner">
+        <!-- Zone 1: Brand Wordmark -->
+        <a href="index.html" class="brand-wordmark" aria-label="Gửi một lời — Về trang chủ">
+          <svg class="brand-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/>
+            <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/>
+          </svg>
+          <span>Gửi một lời</span>
+        </a>
+
+        <!-- Zone 2: Navigation Links -->
+        <nav class="site-nav" aria-label="Menu chính">
+          <a href="index.html" class="nav-link">Trang chủ</a>
+          <a href="write.html" class="nav-link active">Viết điều chưa nói</a>
+          <a href="read.html" class="nav-link">Đọc lời nhắn</a>
+          <a href="explore.html" class="nav-link">Khám phá cảm xúc</a>
+        </nav>
+
+        <!-- Zone 3: Primary Action CTA & Mobile Trigger -->
+        <div class="header-actions">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-save-draft">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            Lưu nháp
+          </button>
+          <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Mở danh mục điều hướng">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-panel" id="mobile-nav-panel">
+      <a href="index.html" class="nav-link">Trang chủ</a>
+      <a href="write.html" class="nav-link active">Viết điều chưa nói</a>
+      <a href="read.html" class="nav-link">Đọc lời nhắn</a>
+      <a href="explore.html" class="nav-link">Khám phá cảm xúc</a>
+    </div>
+
+    <main class="site-container" style="padding-top: 2rem; padding-bottom: 4rem;">
+      <!-- Studio Header -->
+      <div style="margin-bottom: 2rem; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="section-kicker">Trình tạo thiệp Studio</span>
+          <h1 class="section-title" style="font-size: 2.2rem; margin-bottom: 0.35rem;">Viết điều chưa nói</h1>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-muted);">
+            Tùy biến từng chi tiết của bức thư: chất liệu giấy, phông chữ, cảm xúc và kéo thả các sticker trang trí theo ý bạn.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-inspiration-prompt" title="Lấy gợi ý viết câu chuyện">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            Gợi ý câu hỏi
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-reset-design" title="Đặt lại thiết kế về mặc định">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+            Đặt lại
+          </button>
+        </div>
+      </div>
+
+      <!-- Studio Main Workspace -->
+      <div class="editor-wrapper">
+        <!-- Left Panel: Controls & Options -->
+        <div class="editor-controls-panel">
+          <div class="editor-nav-tabs" role="tablist">
+            <button type="button" class="editor-tab-btn active" data-tab-target="tab-content" role="tab">1. Nội dung</button>
+            <button type="button" class="editor-tab-btn" data-tab-target="tab-templates" role="tab">2. Mẫu thiệp</button>
+            <button type="button" class="editor-tab-btn" data-tab-target="tab-style" role="tab">3. Màu &amp; Chữ</button>
+            <button type="button" class="editor-tab-btn" data-tab-target="tab-stickers" role="tab">4. Stickers</button>
+          </div>
+
+          <!-- Tab 1: Nội dung -->
+          <div class="editor-tab-content active" id="tab-content">
+            <div class="form-group">
+              <label for="input-content" class="form-label">Nội dung lời nhắn</label>
+              <textarea id="input-content" class="form-textarea" placeholder="Ước gì ngày ấy mình đã đủ can đảm để nói ra..." maxlength="500"></textarea>
+              <div class="char-counter" id="char-counter">0/500</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label for="input-category" class="form-label">Danh mục cảm xúc</label>
+                <select id="input-category" class="form-select">
+                  <option value="unsaid">Những điều khó nói</option>
+                  <option value="miss_you">Nỗi nhớ</option>
+                  <option value="apology">Lời xin lỗi</option>
+                  <option value="gratitude">Lời cảm ơn</option>
+                  <option value="love">Tình yêu</option>
+                  <option value="family">Gia đình</option>
+                  <option value="friends">Bạn bè</option>
+                  <option value="healing">Chữa lành</option>
+                  <option value="hope">Hy vọng</option>
+                  <option value="uncategorized">Tâm tình khác</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Cảm xúc đại diện</label>
+                <button type="button" class="btn btn-secondary" id="main-emotion-btn" style="width: 100%; font-size: 1.35rem; justify-content: center; height: 42px;" title="Bấm để đổi cảm xúc">
+                  💌
+                </button>
+                <span class="form-hint">Bấm để xoay vòng cảm xúc</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-alias" class="form-label">Danh xưng hiển thị (Tùy chọn)</label>
+              <input type="text" id="input-alias" class="form-input" placeholder="Ví dụ: Một người bạn cũ, Đứa con xa nhà, Kẻ ngốc..." maxlength="50" />
+              <span class="form-hint">Mặc định sẽ để "— Một người lạ" nếu bạn để trống.</span>
+            </div>
+          </div>
+
+          <!-- Tab 2: Mẫu thiệp (100+) -->
+          <div class="editor-tab-content" id="tab-templates">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <input type="text" id="template-search-input" class="form-input" placeholder="🔍 Tìm kiếm mẫu thiệp (ví dụ: hoa, đêm sao, vintage, chữa lành...)" />
+              <div class="template-category-filter-bar" id="template-category-filter-bar">
+                <!-- Dynamically populated categories -->
+              </div>
+              <div id="template-count-display" style="font-size: 0.75rem; color: var(--color-ink-subtle); font-weight: 500;">
+                Hiển thị 102/102 mẫu thiệp
+              </div>
+            </div>
+            <div class="template-grid" id="template-options-list">
+              <!-- Dynamically populated via write.js from templates-100 -->
+            </div>
+          </div>
+
+          <!-- Tab 3: Màu & Chữ (Thư viện Font, Tương phản WCAG, Chống chìm chữ) -->
+          <div class="editor-tab-content" id="tab-style">
+            <!-- Section A: Kiểm tra độ tương phản & Chống chìm chữ -->
+            <div class="form-group">
+              <label class="form-label">Độ tương phản chữ &amp; nền (WCAG)</label>
+              <div class="contrast-meter-box">
+                <div>
+                  <span class="contrast-badge" id="contrast-meter-badge">
+                    <span id="contrast-icon">✓</span> <span id="contrast-text">Đang tính toán...</span>
+                  </span>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-auto-contrast" title="Tự động chọn màu chữ tối ưu tương phản cao nhất">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  Tự động tối ưu tương phản
+                </button>
+              </div>
+            </div>
+
+            <!-- Section B: Hiệu ứng nổi chữ & Đổ bóng chống chìm -->
+            <div class="form-group">
+              <label class="form-label">Hiệu ứng nổi chữ &amp; Chống chìm</label>
+              <div class="text-shadow-choice-row" id="text-shadow-choices">
+                <button type="button" class="btn btn-secondary btn-sm active" data-shadow="none">Không bóng</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-shadow="soft">Bóng nhẹ êm</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-shadow="glow">Dạ quang sáng</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-shadow="outline">Viền sắc nét</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-shadow="deep">Bóng sâu</button>
+              </div>
+              <span class="form-hint">Dùng "Dạ quang" trên nền tối hoặc "Viền sắc nét" để chữ luôn nổi rõ ràng 100%.</span>
+            </div>
+
+            <!-- Section C: Màu chữ -->
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="form-label">Màu chữ</label>
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <label for="custom-text-color" style="font-size: 0.75rem; color: var(--color-ink-subtle);">Tùy biến:</label>
+                  <input type="color" id="custom-text-color" value="#4A3B32" style="width: 28px; height: 28px; padding: 0; cursor: pointer; border-radius: var(--radius-xs); border: 1px solid var(--color-border-subtle);" />
+                </div>
+              </div>
+              <div class="swatch-grid" id="text-color-swatches-container">
+                <button type="button" class="color-swatch-btn text-color-swatch active" data-color="#4A3B32" style="background-color: #4A3B32;" title="Nâu hạt dẻ"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#1C1917" style="background-color: #1C1917;" title="Mực đen tuyền"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#292524" style="background-color: #292524;" title="Mực than"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#5D3E4B" style="background-color: #5D3E4B;" title="Hồng gỗ"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#2C3E50" style="background-color: #2C3E50;" title="Xanh chàm"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#2E4233" style="background-color: #2E4233;" title="Xanh rêu"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#F4E8CE" style="background-color: #F4E8CE;" title="Vàng cát dạ quang"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#FFF4D6" style="background-color: #FFF4D6;" title="Vàng trăng non"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#FFFFFF" style="background-color: #FFFFFF;" title="Trắng tinh khiết"></button>
+                <button type="button" class="color-swatch-btn text-color-swatch" data-color="#E0E7FF" style="background-color: #E0E7FF;" title="Lam sương mờ"></button>
+              </div>
+            </div>
+
+            <!-- Section D: Thư viện Font chữ (32+ Font) -->
+            <div class="form-group">
+              <label class="form-label">Thư viện phông chữ (Hỗ trợ tiếng Việt trọn vẹn)</label>
+              <div class="font-category-filter-bar" id="font-category-filter-bar">
+                <!-- Dynamically populated font categories -->
+              </div>
+              <div class="font-gallery-list" id="font-gallery-list">
+                <!-- Dynamically populated fonts list -->
+              </div>
+            </div>
+
+            <!-- Section E: Tinh chỉnh Typography (Cỡ chữ, Giãn dòng, Căn lề) -->
+            <div class="form-group" style="background-color: var(--color-cream-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border-hairline);">
+              <label class="form-label" style="margin-bottom: 0.25rem;">Tinh chỉnh kiểu chữ</label>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-ink-muted); margin-bottom: 0.25rem;">
+                    <span>Cỡ chữ:</span>
+                    <span id="font-size-val" class="typography-slider-val">18px</span>
+                  </div>
+                  <div class="typography-slider-row">
+                    <input type="range" id="slider-font-size" min="14" max="28" value="18" step="1" />
+                  </div>
+                </div>
+
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-ink-muted); margin-bottom: 0.25rem;">
+                    <span>Giãn dòng:</span>
+                    <span id="line-height-val" class="typography-slider-val">1.6</span>
+                  </div>
+                  <div class="typography-slider-row">
+                    <input type="range" id="slider-line-height" min="1.2" max="2.2" value="1.6" step="0.05" />
+                  </div>
+                </div>
+
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-ink-muted); margin-bottom: 0.25rem;">
+                    <span>Khoảng cách chữ:</span>
+                    <span id="letter-spacing-val" class="typography-slider-val">0px</span>
+                  </div>
+                  <div class="typography-slider-row">
+                    <input type="range" id="slider-letter-spacing" min="-0.5" max="2.5" value="0" step="0.25" />
+                  </div>
+                </div>
+
+                <div>
+                  <span style="font-size: 0.75rem; color: var(--color-ink-muted); display: block; margin-bottom: 0.35rem;">Căn lề:</span>
+                  <div style="display: flex; gap: 0.4rem;">
+                    <button type="button" class="btn btn-secondary btn-sm align-choice-btn active" data-align="left" style="flex: 1;">Trái</button>
+                    <button type="button" class="btn btn-secondary btn-sm align-choice-btn" data-align="center" style="flex: 1;">Giữa</button>
+                    <button type="button" class="btn btn-secondary btn-sm align-choice-btn" data-align="right" style="flex: 1;">Phải</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section F: Nền thiệp & Họa tiết giấy -->
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="form-label">Màu nền thiệp</label>
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <label for="custom-bg-color" style="font-size: 0.75rem; color: var(--color-ink-subtle);">Tùy biến:</label>
+                  <input type="color" id="custom-bg-color" value="#FAF4EB" style="width: 28px; height: 28px; padding: 0; cursor: pointer; border-radius: var(--radius-xs); border: 1px solid var(--color-border-subtle);" />
+                </div>
+              </div>
+              <div class="swatch-grid">
+                <button type="button" class="color-swatch-btn active" data-color="#FAF4EB" style="background-color: #FAF4EB;" title="Giấy kem"></button>
+                <button type="button" class="color-swatch-btn" data-color="#FAF9F6" style="background-color: #FAF9F6;" title="Trắng ngà"></button>
+                <button type="button" class="color-swatch-btn" data-color="#FDEEE5" style="background-color: #FDEEE5;" title="Cam đào pastel"></button>
+                <button type="button" class="color-swatch-btn" data-color="#FDF2F4" style="background-color: #FDF2F4;" title="Hồng phấn"></button>
+                <button type="button" class="color-swatch-btn" data-color="#EAF0F6" style="background-color: #EAF0F6;" title="Xanh sương khói"></button>
+                <button type="button" class="color-swatch-btn" data-color="#EEF4EC" style="background-color: #EEF4EC;" title="Xanh lá bạc"></button>
+                <button type="button" class="color-swatch-btn" data-color="#E7F3F5" style="background-color: #E7F3F5;" title="Xanh biển lặng"></button>
+                <button type="button" class="color-swatch-btn" data-color="#182035" style="background-color: #182035;" title="Xanh đêm đầy sao"></button>
+                <button type="button" class="color-swatch-btn" data-color="#211D22" style="background-color: #211D22;" title="Than củi ánh nến"></button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-pattern" class="form-label">Họa tiết nền giấy</label>
+              <select id="input-pattern" class="form-select">
+                <option value="none">Trơn tĩnh lặng</option>
+                <option value="ruled">Dòng kẻ viết thư cổ điển</option>
+                <option value="dots">Lưới chấm sổ tay cá nhân</option>
+                <option value="stars">Chấm sao lấp lánh</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tab 4: Stickers & Trang trí -->
+          <div class="editor-tab-content" id="tab-stickers">
+            <p style="font-size: 0.8125rem; color: var(--color-ink-subtle);">
+              Bấm vào bất kỳ sticker nào bên dưới để đặt lên thiệp. Bạn có thể <strong>kéo thả trực tiếp bằng chuột hoặc ngón tay</strong> trên thiệp để đổi vị trí.
+            </p>
+
+            <div id="sticker-picker-container">
+              <!-- Dynamically populated via emoji-picker.js -->
+            </div>
+
+            <!-- Sticker Action Bar when selected -->
+            <div class="sticker-control-bar" id="sticker-control-bar">
+              <span style="font-weight: 500;">Sticker đang chọn:</span>
+              <div class="sticker-control-actions">
+                <button type="button" class="icon-btn" id="btn-sticker-scale-up" title="Phóng to" style="width: 30px; height: 30px;">＋</button>
+                <button type="button" class="icon-btn" id="btn-sticker-scale-down" title="Thu nhỏ" style="width: 30px; height: 30px;">－</button>
+                <button type="button" class="icon-btn" id="btn-sticker-rotate-left" title="Xoay trái" style="width: 30px; height: 30px;">↺</button>
+                <button type="button" class="icon-btn" id="btn-sticker-rotate-right" title="Xoay phải" style="width: 30px; height: 30px;">↻</button>
+                <button type="button" class="icon-btn" id="btn-sticker-front" title="Đưa lên trên cùng" style="width: 30px; height: 30px;">🔝</button>
+                <button type="button" class="icon-btn" id="btn-sticker-delete" title="Xóa sticker này" style="width: 30px; height: 30px; color: #DC2626;">✕</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel: Live Stationery Card Preview -->
+        <div class="editor-preview-panel">
+          <div class="preview-toolbar">
+            <span class="preview-title-kicker">Xem trước trực tiếp &amp; Kéo thả sticker</span>
+            <div class="preview-actions-group">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-export-config" title="Xem hoặc tải mã XML/JSON của thiệp">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Xuất XML / JSON
+              </button>
+            </div>
+          </div>
+
+          <div class="preview-card-stage">
+            <article class="stationery-card template-letter-vintage" id="preview-stationery-card">
+              <div class="stationery-card-inner">
+                <div class="card-header-row">
+                  <div class="unboxed-meta">
+                    <span id="preview-card-category">Những điều khó nói</span>
+                    <span class="meta-separator" aria-hidden="true">·</span>
+                    <span id="preview-card-date">Vừa xong</span>
+                  </div>
+                  <div class="card-emotion-indicator" id="preview-card-emotion">💌</div>
+                </div>
+
+                <div class="card-content-area">
+                  <p class="card-body-text" id="preview-card-body">Hãy viết những điều bạn chưa kịp nói vào đây...</p>
+                </div>
+
+                <div class="card-footer-row">
+                  <span class="card-author-alias" id="preview-card-alias">— Một người lạ</span>
+                  <div class="unboxed-meta" style="font-size: 0.75rem; opacity: 0.7;">
+                    Bản nháp tự động lưu
+                  </div>
+                </div>
+              </div>
+              <div class="sticker-container-layer"></div>
+            </article>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="preview-footer-actions">
+            <button type="button" class="btn btn-secondary" id="btn-export-png">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Tải thiệp dạng ảnh PNG
+            </button>
+            <button type="button" class="btn btn-primary btn-lg" id="btn-submit-message">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              Gửi lời nhắn này
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="site-container">
+        <div class="footer-bottom-bar" style="border-top: none; padding-top: 0;">
+          <div>© 2026 Gửi Một Lời — Unspoken. Tự tay thiết kế những lời chưa nói.</div>
+          <div class="footer-bottom-nav">
+            <a href="index.html">Trang chủ</a>
+            <span>·</span>
+            <a href="read.html">Đọc lời nhắn</a>
+            <span>·</span>
+            <a href="explore.html">Khám phá cảm xúc</a>
+            <span>·</span>
+            <a href="admin.html">Quản trị</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Main Studio Script -->
+    <script type="module" src="/js/pages/write.js"></script>
+  </body>
+</html>

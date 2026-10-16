@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <script>
+      (function() {
+        try {
+          var _orig = (typeof window !== 'undefined' && window.fetch) ? window.fetch.bind(window) : null;
+          var _current = _orig;
+          var getter = function() { return _current; };
+          var setter = function(v) { _current = v; };
+          var targets = [];
+          if (typeof Window !== 'undefined' && Window.prototype) targets.push(Window.prototype);
+          if (typeof window !== 'undefined') {
+            targets.push(window);
+            try {
+              var p = Object.getPrototypeOf(window);
+              if (p && targets.indexOf(p) === -1) targets.push(p);
+            } catch (_) {}
+          }
+          targets.forEach(function(t) {
+            try {
+              Object.defineProperty(t, 'fetch', {
+                get: getter,
+                set: setter,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (_) {}
+          });
+        } catch (_) {}
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Bảng Quản Trị & Kiểm Duyệt — Gửi Một Lời</title>
+    <meta name="description" content="Khu vực quản trị và kiểm duyệt thư kín đáo, an toàn cho website Gửi một lời — Những lời chưa nói." />
+
+    <!-- Google Fonts 30+ Vietnamese Typography Suite -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@600&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600&family=Caveat:wght@500;600&family=Cinzel:wght@600&family=Comfortaa:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Dancing+Script:wght@500;600;700&family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Kalam:wght@400;700&family=Lobster&family=Lora:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&family=Marck+Script&family=Merriweather:ital,wght@0,400;1,400&family=Montserrat:wght@400;500;600&family=Nunito:wght@500;600&family=Open+Sans:wght@400;500;600&family=Oswald:wght@500;600&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Prata&family=Public+Sans:wght@400;500&family=Quicksand:wght@500;600&family=Roboto:wght@400;500&family=Satisfy&family=Source+Code+Pro:wght@400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/editor.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <!-- Admin Sticky Topbar -->
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <a href="admin.html" class="admin-brand-group">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-dusty-rose);">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span class="admin-logo-mark">Gửi một lời</span>
+          <span class="admin-badge-pill">Quản trị & Kiểm duyệt</span>
+        </a>
+
+        <div class="admin-nav-actions" id="admin-header-actions">
+          <a href="index.html" class="btn btn-secondary btn-sm" title="Về trang chủ công khai" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <span class="hide-mobile">Trang công khai</span>
+          </a>
+
+          <div id="auth-controls" style="display: none; align-items: center; gap: 0.5rem;">
+            <button type="button" class="btn btn-ghost btn-sm" id="btn-view-audit-logs" title="Xem nhật ký kiểm duyệt">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span class="hide-mobile">Nhật ký</span>
+            </button>
+            <div class="admin-user-tag hide-mobile" id="current-user-tag">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span id="admin-username-label">admin</span>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-admin-logout" title="Đăng xuất">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span class="hide-mobile">Thoát</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="admin-main">
+      <!-- 1. LOGIN SCREEN (Visible if unauthenticated) -->
+      <section id="admin-login-section" class="login-screen-wrapper">
+        <div class="login-card">
+          <div class="login-card-header">
+            <div style="width: 48px; height: 48px; margin: 0 auto 1rem; border-radius: var(--radius-full); background: rgba(201, 143, 157, 0.18); display: flex; align-items: center; justify-content: center; color: var(--color-deep-rose);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <h1 class="login-title">Đăng Nhập Quản Trị</h1>
+            <p class="login-subtitle">Không gian quản lý & kiểm duyệt thư ẩn danh</p>
+          </div>
+
+          <div class="demo-credentials-banner">
+            <strong style="display: block; margin-bottom: 0.25rem;">Tài khoản kiểm thử môi trường Preview:</strong>
+            <span>Tên đăng nhập: <code>admin</code> · Mật khẩu: <code>quan-tri-vien-2026</code></span>
+          </div>
+
+          <form id="admin-login-form">
+            <div id="login-error-msg" style="display: none; padding: 0.65rem 0.85rem; margin-bottom: 1rem; background-color: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.25); border-radius: var(--radius-sm); font-size: 0.875rem; color: #B91C1C;"></div>
+
+            <div class="form-group">
+              <label for="admin-user-input" class="form-label">Tên đăng nhập</label>
+              <input type="text" id="admin-user-input" class="form-control" placeholder="admin" required autocomplete="username" />
+            </div>
+
+            <div class="form-group">
+              <label for="admin-pass-input" class="form-label">Mật khẩu</label>
+              <input type="password" id="admin-pass-input" class="form-control" placeholder="••••••••••••" required autocomplete="current-password" />
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+              <label style="display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.875rem; cursor: pointer; color: var(--color-ink-muted);">
+                <input type="checkbox" id="admin-remember-me" checked />
+                Ghi nhớ đăng nhập
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" id="btn-login-submit" style="width: 100%;">
+              Đăng nhập quản trị
+            </button>
+          </form>
+
+          <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px dashed var(--color-border-hairline); text-align: center;">
+            <a href="index.html" class="btn btn-ghost btn-sm" style="color: var(--color-ink-subtle);">
+              ← Quay lại trang chủ công khai
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. DASHBOARD VIEW (Visible when authenticated) -->
+      <section id="admin-dashboard-section" style="display: none;">
+        <!-- Page Title & Quick Actions Row -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <h1 style="font-family: var(--font-serif); font-size: 1.85rem; color: var(--color-antique-ink); margin-bottom: 0.25rem;">
+              Kiểm Duyệt Thư & Nội Dung
+            </h1>
+            <p style="font-size: 0.9375rem; color: var(--color-ink-muted);">
+              Theo dõi, ẩn các thư nhạy cảm và bảo vệ không gian chia sẻ văn minh.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-data" title="Làm mới dữ liệu">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+              Làm mới
+            </button>
+          </div>
+        </div>
+
+        <!-- 2.1 Thanh tổng quan (Live Dynamic Statistics) -->
+        <div class="stats-grid" id="stats-overview-grid">
+          <!-- Total -->
+          <div class="stat-card stat-card-total active" data-filter-status="all" role="button" tabindex="0" title="Bấm để xem tất cả">
+            <div class="stat-card-header">
+              <span class="stat-label">Tổng số thư</span>
+              <div class="stat-icon">💌</div>
+            </div>
+            <div class="stat-value" id="stat-total-count">0</div>
+          </div>
+
+          <!-- Published -->
+          <div class="stat-card stat-card-published" data-filter-status="published" role="button" tabindex="0" title="Bấm để lọc thư công khai">
+            <div class="stat-card-header">
+              <span class="stat-label">Đang công khai</span>
+              <div class="stat-icon">🌱</div>
+            </div>
+            <div class="stat-value" id="stat-published-count">0</div>
+          </div>
+
+          <!-- Hidden -->
+          <div class="stat-card stat-card-hidden" data-filter-status="hidden" role="button" tabindex="0" title="Bấm để lọc thư đang ẩn">
+            <div class="stat-card-header">
+              <span class="stat-label">Đang bị ẩn</span>
+              <div class="stat-icon">🔒</div>
+            </div>
+            <div class="stat-value" id="stat-hidden-count">0</div>
+          </div>
+
+          <!-- Pending -->
+          <div class="stat-card stat-card-pending" data-filter-status="pending" role="button" tabindex="0" title="Bấm để lọc thư chờ xem xét">
+            <div class="stat-card-header">
+              <span class="stat-label">Chờ xem xét</span>
+              <div class="stat-icon">⏳</div>
+            </div>
+            <div class="stat-value" id="stat-pending-count">0</div>
+          </div>
+
+          <!-- Deleted -->
+          <div class="stat-card stat-card-deleted" data-filter-status="deleted" role="button" tabindex="0" title="Bấm để lọc thư đã xóa">
+            <div class="stat-card-header">
+              <span class="stat-label">Đã xóa</span>
+              <div class="stat-icon">🗑️</div>
+            </div>
+            <div class="stat-value" id="stat-deleted-count">0</div>
+          </div>
+        </div>
+
+        <!-- 3.3 Batch Action Bar (Appears when items are selected) -->
+        <div class="batch-action-bar" id="batch-action-bar">
+          <div class="batch-info">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <span>Đã chọn <strong id="batch-selected-count">0</strong> bức thư</span>
+          </div>
+          <div class="batch-actions-group">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-batch-hide" style="color: #A84B5E;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              Ẩn đã chọn
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-batch-restore" style="color: #2B7A4B;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              Hiện lại đã chọn
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-batch-delete" style="color: #DC2626;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              Xóa đã chọn
+            </button>
+            <button type="button" class="btn btn-ghost btn-sm" id="btn-batch-deselect" style="color: var(--color-cream); opacity: 0.85;">
+              Bỏ chọn
+            </button>
+          </div>
+        </div>
+
+        <!-- 2.3 Tìm kiếm & Bộ lọc (Filter Toolbar) -->
+        <div class="admin-toolbar">
+          <div class="toolbar-primary-row">
+            <!-- Search by content, ID, alias -->
+            <div class="search-input-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="admin-search-input" class="admin-search-input" placeholder="Tìm kiếm theo nội dung, ID thư hoặc người gửi..." />
+            </div>
+
+            <!-- Status filter tabs -->
+            <div class="filter-bar" id="admin-status-filters" style="margin: 0; padding: 0.25rem;">
+              <button type="button" class="filter-tab-btn active" data-status="all">Tất cả</button>
+              <button type="button" class="filter-tab-btn" data-status="published">Công khai</button>
+              <button type="button" class="filter-tab-btn" data-status="hidden">Đang ẩn</button>
+              <button type="button" class="filter-tab-btn" data-status="pending">Chờ xem xét</button>
+              <button type="button" class="filter-tab-btn" data-status="deleted">Đã xóa</button>
+            </div>
+          </div>
+
+          <div class="toolbar-controls-row">
+            <!-- Category dropdown -->
+            <select id="filter-category" class="admin-select" aria-label="Lọc theo chủ đề">
+              <option value="all">Tất cả chủ đề</option>
+              <option value="unsaid">Những lời chưa nói</option>
+              <option value="love">Tình yêu & Người cũ</option>
+              <option value="family">Gia đình & Cha mẹ</option>
+              <option value="healing">Chữa lành & Bản thân</option>
+              <option value="apology">Lời xin lỗi</option>
+              <option value="gratitude">Lời cảm ơn</option>
+            </select>
+
+            <!-- Date Range dropdown -->
+            <select id="filter-date-range" class="admin-select" aria-label="Lọc theo khoảng thời gian">
+              <option value="all">Mọi thời gian</option>
+              <option value="today">Hôm nay (24 giờ qua)</option>
+              <option value="week">7 ngày qua</option>
+              <option value="month">30 ngày qua</option>
+            </select>
+
+            <!-- Sort order dropdown -->
+            <select id="filter-sort-order" class="admin-select" aria-label="Sắp xếp">
+              <option value="newest">Thời gian: Mới nhất</option>
+              <option value="oldest">Thời gian: Cũ nhất</option>
+            </select>
+
+            <!-- Reset filters button -->
+            <button type="button" class="btn btn-ghost btn-sm" id="btn-reset-filters" style="color: var(--color-ink-subtle);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+              Đặt lại bộ lọc
+            </button>
+          </div>
+        </div>
+
+        <!-- 2.2 Danh sách thư (Desktop Table & Mobile Cards) -->
+        <div class="table-container">
+          <!-- Desktop Table -->
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 44px; text-align: center;">
+                  <input type="checkbox" id="select-all-checkbox" aria-label="Chọn tất cả thư" />
+                </th>
+                <th style="width: 140px;">Mã thư</th>
+                <th>Trích đoạn nội dung</th>
+                <th style="width: 150px;">Chủ đề & Cảm xúc</th>
+                <th style="width: 130px;">Thời gian gửi</th>
+                <th style="width: 130px;">Trạng thái</th>
+                <th style="width: 170px; text-align: right;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="messages-table-body">
+              <!-- Rendered via js/pages/admin.js -->
+            </tbody>
+          </table>
+
+          <!-- Mobile Cards Container (< 860px) -->
+          <div class="mobile-cards-list" id="messages-mobile-list">
+            <!-- Rendered via js/pages/admin.js -->
+          </div>
+
+          <!-- Empty State (When no messages match) -->
+          <div id="admin-empty-state" style="display: none; padding: 3.5rem 1.5rem; text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📭</div>
+            <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--color-antique-ink); margin-bottom: 0.4rem;">
+              Không tìm thấy bức thư nào phù hợp
+            </h3>
+            <p style="font-size: 0.9375rem; color: var(--color-ink-muted); max-width: 420px; margin: 0 auto 1.25rem;">
+              Hãy thử tìm kiếm với từ khóa khác hoặc đặt lại bộ lọc để xem toàn bộ danh sách thư.
+            </p>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-empty-reset">
+              Đặt lại toàn bộ bộ lọc
+            </button>
+          </div>
+        </div>
+
+        <!-- 2.3 Phân trang (Pagination Bar) -->
+        <div class="pagination-container" id="admin-pagination-bar">
+          <div class="pagination-info" id="pagination-info-text">
+            Hiển thị 0 trong 0 bức thư
+          </div>
+          <div class="pagination-controls">
+            <button type="button" class="page-btn" id="btn-page-prev" aria-label="Trang trước">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <div id="page-numbers-group" style="display: flex; gap: 0.25rem;"></div>
+            <button type="button" class="page-btn" id="btn-page-next" aria-label="Trang tiếp theo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Security & API Contract Technical Accordion -->
+        <div class="security-notice-card">
+          <div class="security-notice-header" id="security-notice-toggle" role="button" tabindex="0">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-dusty-rose);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <strong style="font-size: 0.9375rem; color: var(--color-antique-ink);">Kiến Trúc Bảo Mật & API Contract Cho Môi Trường Production</strong>
+            </div>
+            <span id="security-notice-arrow" style="font-size: 0.8125rem; color: var(--color-ink-subtle);">Chi tiết ▼</span>
+          </div>
+          <div class="security-notice-body" id="security-notice-content" style="display: none;">
+            <p>
+              <strong>Lưu ý kiến trúc an toàn:</strong> Trong ứng dụng web tĩnh chỉ sử dụng JavaScript phía client và file XML, trình duyệt không thể tự cung cấp cơ chế phân quyền bảo mật tuyệt đối hay ghi trực tiếp vào đĩa cứng máy chủ. Để đảm bảo an toàn tuyệt đối khi đưa lên Internet, hệ thống đã được phân tách hoàn toàn theo chuẩn <code>AdminRepository</code> với hợp đồng API RESTful sau:
+            </p>
+            <div class="api-endpoint-list">
+              <div class="api-endpoint-item"><span class="http-method http-post">POST</span> /api/admin/auth/login — Xác thực danh tính quản trị viên & cấp JWT Bearer Token</div>
+              <div class="api-endpoint-item"><span class="http-method http-get">GET</span> /api/admin/stats — Trả về số liệu thống kê thực tế được tính toán từ cơ sở dữ liệu</div>
+              <div class="api-endpoint-item"><span class="http-method http-get">GET</span> /api/admin/messages — Truy vấn danh sách thư có kiểm tra quyền, phân trang và tìm kiếm</div>
+              <div class="api-endpoint-item"><span class="http-method http-patch">PATCH</span> /api/admin/messages/:id/status — Ẩn/hiện/chờ duyệt thư kèm lý do và ghi nhận audit log</div>
+              <div class="api-endpoint-item"><span class="http-method http-delete">DELETE</span> /api/admin/messages/:id — Xóa mềm hoặc xóa vĩnh viễn thư khỏi cơ sở dữ liệu</div>
+              <div class="api-endpoint-item"><span class="http-method http-post">POST</span> /api/admin/messages/batch — Thực hiện thao tác hàng loạt có kiểm soát quyền hạn</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =========================================================================
+         DIALOG MODALS
+         ========================================================================= -->
+
+    <!-- 1. Detail & Stationery Inspection Modal -->
+    <div id="admin-detail-modal" class="modal-backdrop">
+      <div class="modal-dialog" style="max-width: 680px;">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="status-pill" id="detail-modal-status-pill">Công khai</span>
+            <span class="msg-id-code" id="detail-modal-id-code">msg-id</span>
+          </div>
+          <button type="button" class="icon-btn" id="detail-modal-close-btn" aria-label="Đóng">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="padding: 1.5rem 1.75rem;">
+          <!-- Card Visual Preview Stage -->
+          <div id="detail-card-preview-stage" style="margin-bottom: 1.5rem;"></div>
+
+          <!-- Moderation Audit Information -->
+          <div id="detail-moderation-box" style="background-color: var(--color-cream-subtle); border: 1px solid var(--color-border-hairline); border-radius: var(--radius-sm); padding: 1rem; font-size: 0.875rem;">
+            <div style="font-weight: 600; color: var(--color-antique-ink); margin-bottom: 0.35rem;">Thông tin kiểm duyệt:</div>
+            <div id="detail-moderation-reason" style="color: var(--color-ink-muted); margin-bottom: 0.25rem;">Lý do: Không có</div>
+            <div id="detail-moderation-time" style="color: var(--color-ink-subtle); font-size: 0.8125rem;">Thời gian cập nhật: Gần đây</div>
+          </div>
+        </div>
+        <div class="modal-footer" style="justify-content: space-between;">
+          <div style="display: flex; gap: 0.5rem;" id="detail-action-buttons">
+            <!-- Dynamic Actions -->
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="detail-modal-dismiss-btn">Đóng</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Moderation Reason & Action Modal (Hide / Pending) -->
+    <div id="admin-reason-modal" class="modal-backdrop">
+      <div class="modal-dialog" style="max-width: 500px;">
+        <div class="modal-header">
+          <h3 id="reason-modal-title" style="font-size: 1.15rem; font-weight: 600; color: var(--color-antique-ink);">Ẩn Bức Thư Khỏi Trang Công Khai</h3>
+          <button type="button" class="icon-btn" id="reason-modal-close-btn" aria-label="Đóng">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="reason-modal-desc" style="font-size: 0.9375rem; color: var(--color-ink-muted); margin-bottom: 1rem;">
+            Thư bị ẩn sẽ không còn xuất hiện trên trang chủ, trang đọc hay đọc ngẫu nhiên, nhưng vẫn được lưu trữ an toàn để khôi phục khi cần.
+          </p>
+
+          <form id="reason-modal-form" style="display: flex; flex-direction: column; gap: 0.65rem;">
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="moderationPresetReason" value="Chứa ngôn từ thù địch, xúc phạm hoặc bắt nạt" checked style="margin-top: 0.25rem;" />
+              <span>Chứa ngôn từ thù địch, xúc phạm hoặc bắt nạt</span>
+            </label>
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="moderationPresetReason" value="Spam, quảng cáo hoặc nội dung vô nghĩa" style="margin-top: 0.25rem;" />
+              <span>Spam, quảng cáo hoặc nội dung vô nghĩa</span>
+            </label>
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="moderationPresetReason" value="Tiết lộ thông tin cá nhân / số điện thoại riêng tư" style="margin-top: 0.25rem;" />
+              <span>Tiết lộ thông tin cá nhân / số điện thoại riêng tư</span>
+            </label>
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="moderationPresetReason" value="Tạm ẩn theo yêu cầu hoặc chờ xác minh" style="margin-top: 0.25rem;" />
+              <span>Tạm ẩn theo yêu cầu hoặc chờ xác minh</span>
+            </label>
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="moderationPresetReason" value="other" style="margin-top: 0.25rem;" />
+              <span>Lý do khác:</span>
+            </label>
+
+            <textarea id="moderation-custom-reason" class="form-control" rows="2" placeholder="Nhập lý do chi tiết (nếu chọn lý do khác)..." style="margin-top: 0.25rem;"></textarea>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" id="reason-modal-cancel-btn">Hủy bỏ</button>
+          <button type="button" class="btn btn-primary btn-sm" id="reason-modal-confirm-btn">Xác nhận thực hiện</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Delete Confirmation Modal -->
+    <div id="admin-delete-modal" class="modal-backdrop">
+      <div class="modal-dialog" style="max-width: 480px;">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 0.5rem; color: #DC2626;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <h3 style="font-size: 1.15rem; font-weight: 600; color: #DC2626;">Xác Nhận Xóa Thư</h3>
+          </div>
+          <button type="button" class="icon-btn" id="delete-modal-close-btn" aria-label="Đóng">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="delete-modal-target-desc" style="font-size: 0.9375rem; color: var(--color-ink-muted); margin-bottom: 1.25rem;">
+            Bạn đang chuẩn bị xóa bức thư này. Thao tác xóa sẽ loại bỏ bức thư khỏi tất cả các trang công khai.
+          </p>
+
+          <div style="background-color: rgba(220, 38, 38, 0.06); border: 1px solid rgba(220, 38, 38, 0.25); border-radius: var(--radius-sm); padding: 0.875rem 1rem; margin-bottom: 1.25rem;">
+            <div style="font-weight: 600; color: #B91C1C; margin-bottom: 0.5rem; font-size: 0.875rem;">Chọn hình thức xóa:</div>
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.875rem; cursor: pointer; margin-bottom: 0.5rem;">
+              <input type="radio" name="deleteTypeChoice" value="soft" checked style="margin-top: 0.2rem;" />
+              <span><strong>Xóa mềm (Khuyên dùng):</strong> Đánh dấu trạng thái là <code>deleted</code>, thư bị loại khỏi trang công khai nhưng quản trị viên vẫn có thể theo dõi trong tab "Đã xóa".</span>
+            </label>
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.875rem; cursor: pointer;">
+              <input type="radio" name="deleteTypeChoice" value="permanent" style="margin-top: 0.2rem;" />
+              <span><strong>Xóa vĩnh viễn:</strong> Xóa sạch dữ liệu khỏi bộ nhớ cục bộ, không thể khôi phục lại.</span>
+            </label>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="delete-reason-input" class="form-label" style="font-size: 0.8125rem;">Lý do xóa thư (tùy chọn):</label>
+            <input type="text" id="delete-reason-input" class="form-control" placeholder="Vi phạm tiêu chuẩn cộng đồng..." />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" id="delete-modal-cancel-btn">Hủy bỏ</button>
+          <button type="button" class="btn btn-primary btn-sm" id="delete-modal-confirm-btn" style="background-color: #DC2626; border-color: #DC2626; color: white;">
+            Đồng ý xóa thư
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Audit Log Timeline Modal -->
+    <div id="admin-audit-modal" class="modal-backdrop">
+      <div class="modal-dialog" style="max-width: 640px;">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-dusty-rose);"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--color-antique-ink);">Nhật Ký Thao Tác Kiểm Duyệt</h3>
+          </div>
+          <button type="button" class="icon-btn" id="audit-modal-close-btn" aria-label="Đóng">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="audit-list" id="audit-logs-container">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" id="audit-modal-dismiss-btn">Đóng</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Application Script Entry Point -->
+    <script type="module" src="/js/pages/admin.js"></script>
+  </body>
+</html>
