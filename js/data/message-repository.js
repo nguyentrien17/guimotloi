@@ -209,7 +209,9 @@ class MessageRepository {
     search = '',
     isFavoriteOnly = false,
     isLocalOnly = false,
-    status = 'published'
+    status = 'published',
+    dateFrom = null, // inclusive, ms timestamp
+    dateTo = null    // exclusive, ms timestamp
   } = {}) {
     let result = [...this.cachedMessages];
 
@@ -232,6 +234,16 @@ class MessageRepository {
 
     if (isLocalOnly) {
       result = result.filter(m => m.isLocal);
+    }
+
+    if (dateFrom != null || dateTo != null) {
+      result = result.filter(m => {
+        const t = new Date(m.createdAt).getTime();
+        if (Number.isNaN(t)) return false;
+        if (dateFrom != null && t < dateFrom) return false;
+        if (dateTo != null && t >= dateTo) return false;
+        return true;
+      });
     }
 
     if (search && search.trim()) {

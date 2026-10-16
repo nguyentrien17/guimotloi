@@ -96,7 +96,7 @@
 
     <main class="site-container" style="padding-top: 2.5rem; padding-bottom: 5rem;">
       <!-- Page Header -->
-      <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2.5rem;">
+      <div class="read-page-header" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2.5rem;">
         <div>
           <span class="section-kicker">Kho lưu trữ cảm xúc</span>
           <h1 class="section-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Lắng nghe những điều chưa nói</h1>
@@ -113,16 +113,16 @@
       </div>
 
       <!-- Filter Controls Section -->
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem; background-color: var(--color-white); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--color-border-hairline); box-shadow: var(--shadow-subtle);">
+      <div class="read-filter-panel" style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem; background-color: var(--color-white); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--color-border-hairline); box-shadow: var(--shadow-subtle);">
         <!-- Row 1: Source Filter & Search -->
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
-          <div style="display: flex; gap: 0.35rem; background-color: var(--color-cream-subtle); padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border-hairline);">
-            <button type="button" class="filter-tab-btn source-tab-btn active" data-source="all">Tất cả lời nhắn</button>
-            <button type="button" class="filter-tab-btn source-tab-btn" data-source="local">Lời nhắn của bạn (Cục bộ)</button>
-            <button type="button" class="filter-tab-btn source-tab-btn" data-source="favorites">Đã lưu yêu thích</button>
+          <div class="source-tabs" style="display: flex; gap: 0.35rem; background-color: var(--color-cream-subtle); padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border-hairline);">
+            <button type="button" class="filter-tab-btn source-tab-btn active" data-source="all"><span class="label-full">Tất cả lời nhắn</span><span class="label-short">Tất cả</span></button>
+            <button type="button" class="filter-tab-btn source-tab-btn" data-source="local"><span class="label-full">Lời nhắn của bạn (Cục bộ)</span><span class="label-short">Của bạn</span></button>
+            <button type="button" class="filter-tab-btn source-tab-btn" data-source="favorites"><span class="label-full">Đã lưu yêu thích</span><span class="label-short">Đã lưu</span></button>
           </div>
 
-          <div style="position: relative; min-width: 260px; max-width: 380px; flex: 1;">
+          <div class="read-search" style="position: relative; min-width: min(260px, 100%); max-width: 380px; flex: 1;">
             <input type="text" id="search-messages-input" class="form-input" placeholder="Tìm theo nội dung, danh xưng..." style="padding-left: 2.25rem;" />
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--color-ink-subtle);"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </div>
@@ -142,10 +142,32 @@
           <button type="button" class="filter-tab-btn cat-tab-btn" data-category="hope">Hy vọng</button>
         </div>
 
-        <!-- Row 3: Emotion Chips & Counter -->
+        <!-- Row 3: Date Filter -->
+        <div class="date-filter" style="display: flex; flex-direction: column; gap: 0.6rem;">
+          <div class="emotion-filter-chips" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="emotion-filter-label" style="font-size: 0.8125rem; font-weight: 500; color: var(--color-ink-subtle);">Lọc theo ngày:</span>
+            <button type="button" class="filter-tab-btn date-filter-chip active" data-range="all">Mọi lúc</button>
+            <button type="button" class="filter-tab-btn date-filter-chip" data-range="today">Hôm nay</button>
+            <button type="button" class="filter-tab-btn date-filter-chip" data-range="7d">7 ngày qua</button>
+            <button type="button" class="filter-tab-btn date-filter-chip" data-range="30d">30 ngày qua</button>
+            <button type="button" class="filter-tab-btn date-filter-chip" data-range="custom">Chọn ngày…</button>
+          </div>
+          <div class="date-range-inputs" id="date-range-inputs" hidden>
+            <label class="date-range-field">
+              <span>Từ ngày</span>
+              <input type="date" id="date-from-input" class="form-input" />
+            </label>
+            <label class="date-range-field">
+              <span>Đến ngày</span>
+              <input type="date" id="date-to-input" class="form-input" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Row 4: Emotion Chips & Counter -->
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
-          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-            <span style="font-size: 0.8125rem; font-weight: 500; color: var(--color-ink-subtle);">Lọc theo cảm xúc:</span>
+          <div class="emotion-filter-chips" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="emotion-filter-label" style="font-size: 0.8125rem; font-weight: 500; color: var(--color-ink-subtle);">Lọc theo cảm xúc:</span>
             <button type="button" class="filter-tab-btn emotion-filter-chip active" data-emotion="all" style="padding: 0.25rem 0.6rem; font-size: 0.8125rem;">Tất cả</button>
             <button type="button" class="filter-tab-btn emotion-filter-chip" data-emotion="🌙" style="padding: 0.25rem 0.5rem;">🌙</button>
             <button type="button" class="filter-tab-btn emotion-filter-chip" data-emotion="🤍" style="padding: 0.25rem 0.5rem;">🤍</button>
@@ -166,7 +188,7 @@
       </div>
 
       <!-- Messages Grid -->
-      <div id="messages-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
+      <div id="messages-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 2rem;">
         <!-- Dynamically rendered via read.js -->
       </div>
 

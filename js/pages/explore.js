@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const innerGrid = document.createElement('div');
     innerGrid.style.display = 'grid';
-    innerGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(320px, 1fr))';
+    innerGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))';
     innerGrid.style.gap = '2.5rem';
     innerGrid.style.alignItems = 'center';
 

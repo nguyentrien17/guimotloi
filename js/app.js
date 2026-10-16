@@ -52,21 +52,88 @@ class AppController {
     const btn = document.getElementById('mobile-menu-btn');
     const panel = document.getElementById('mobile-nav-panel');
 
-    if (btn && panel) {
-      btn.addEventListener('click', () => {
-        panel.classList.toggle('open');
-        const isOpen = panel.classList.contains('open');
-        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      });
+    if (!btn || !panel) return;
 
-      // Close on link click
-      panel.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          panel.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-        });
+    // Rebuild the drawer with the same chrome on every page (pages ship
+    // slightly different markup): header + close, icon links, footer CTA.
+    const NAV_ICONS = {
+      'index.html': '🏡',
+      'write.html': '✍️',
+      'read.html': '💌',
+      'explore.html': '🌙'
+    };
+
+    const links = Array.from(panel.querySelectorAll('a.nav-link'));
+    const list = document.createElement('nav');
+    list.className = 'mobile-nav-links';
+    list.setAttribute('aria-label', 'Menu chính');
+    links.forEach((a) => {
+      const icon = document.createElement('span');
+      icon.className = 'mobile-nav-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.textContent = NAV_ICONS[a.getAttribute('href')] || '•';
+      a.prepend(icon);
+      if (a.classList.contains('active')) a.setAttribute('aria-current', 'page');
+      list.appendChild(a);
+    });
+
+    const head = document.createElement('div');
+    head.className = 'mobile-nav-head';
+    head.innerHTML = `
+      <span class="mobile-nav-brand">Gửi một lời</span>
+      <button type="button" class="icon-btn mobile-nav-close" aria-label="Đóng menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    `;
+
+    const foot = document.createElement('div');
+    foot.className = 'mobile-nav-foot';
+    foot.innerHTML = `
+      <a href="write.html" class="btn btn-primary">Viết lời nhắn mới</a>
+      <p class="mobile-nav-tagline">"Mỗi người đều có một điều chưa nói."</p>
+    `;
+
+    panel.innerHTML = '';
+    panel.append(head, list, foot);
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-label', 'Menu điều hướng');
+    btn.setAttribute('aria-controls', panel.id);
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'mobile-nav-backdrop';
+    panel.before(backdrop);
+
+    const closeBtn = head.querySelector('.mobile-nav-close');
+
+    // While open, everything except the drawer is inert (no clicks, no
+    // focus, hidden from screen readers) and the page can't scroll.
+    const setOpen = (isOpen) => {
+      panel.classList.toggle('open', isOpen);
+      backdrop.classList.toggle('open', isOpen);
+      document.body.classList.toggle('nav-open', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
+      Array.from(document.body.children).forEach((el) => {
+        if (el !== panel && el !== backdrop && el.tagName !== 'SCRIPT') el.inert = isOpen;
       });
-    }
+      if (isOpen) closeBtn.focus();
+      else btn.focus({ preventScroll: true });
+    };
+    const isOpen = () => panel.classList.contains('open');
+
+    btn.addEventListener('click', () => setOpen(!isOpen()));
+    closeBtn.addEventListener('click', () => setOpen(false));
+    backdrop.addEventListener('click', () => setOpen(false));
+    panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) setOpen(false);
+    });
+
+    // Rotating to / resizing into desktop layout closes the drawer.
+    window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
+      if (e.matches && isOpen()) setOpen(false);
+    });
   }
 
   initAmbientParticles() {
@@ -114,15 +181,15 @@ class AppController {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
           </div>
-          <div class="modal-body" style="padding: 2rem 2.25rem;">
+          <div class="modal-body reader-modal-body">
             <div id="reader-card-stage" style="position: relative;"></div>
           </div>
-          <div class="modal-footer" style="justify-content: space-between;">
+          <div class="modal-footer reader-modal-footer">
             <button type="button" class="btn btn-ghost btn-sm" id="reader-report-btn" style="color: var(--color-ink-subtle);">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
               Báo cáo nội dung
             </button>
-            <div style="display: flex; gap: 0.5rem;">
+            <div class="reader-modal-actions">
               <button type="button" class="btn btn-secondary btn-sm" id="reader-copy-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                 Sao chép

@@ -220,6 +220,9 @@ export function renderCardDOM(message, { isInteractive = true, onOpenReader = nu
       const safeY = inHeaderZone ? Math.min(stk.y + 22, 92) : stk.y;
       sEl.style.left = `${stk.x}%`;
       sEl.style.top = `${safeY}%`;
+      // Fixed px, tuned against the canonical 580px design canvas below —
+      // the whole canvas (text + stickers together) is scaled as one rigid
+      // unit at render time, so this never needs to vary by screen size.
       sEl.style.fontSize = `${26 * (stk.scale || 1)}px`;
       sEl.style.transform = `translate(-50%, -50%) rotate(${stk.rotation || 0}deg)`;
       sEl.style.zIndex = idx + 1;
@@ -227,8 +230,18 @@ export function renderCardDOM(message, { isInteractive = true, onOpenReader = nu
     });
   }
 
-  card.appendChild(inner);
-  card.appendChild(stickersLayer);
+  // The card is designed once at a fixed canonical size (580×386.67px, a
+  // 3:2 canvas) and this whole canvas — text wrapping, sticker positions,
+  // spacing, everything — is scaled down/up as a single rigid unit to fit
+  // whatever width the card actually renders at. This guarantees the layout
+  // never "re-flows" differently between desktop and mobile; only the scale
+  // changes, exactly like viewing a fixed-size image at different sizes.
+  const canvas = document.createElement('div');
+  canvas.className = 'stationery-card-canvas';
+  canvas.appendChild(inner);
+  canvas.appendChild(stickersLayer);
+
+  card.appendChild(canvas);
 
   // Click to open focus reader if allowed
   if (isInteractive && typeof onOpenReader === 'function') {

@@ -138,29 +138,38 @@
               <div class="char-counter" id="char-counter">0/500</div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="category-emotion-row">
               <div class="form-group">
-                <label for="input-category" class="form-label">Danh mục cảm xúc</label>
-                <select id="input-category" class="form-select">
-                  <option value="unsaid">Những điều khó nói</option>
-                  <option value="miss_you">Nỗi nhớ</option>
-                  <option value="apology">Lời xin lỗi</option>
-                  <option value="gratitude">Lời cảm ơn</option>
-                  <option value="love">Tình yêu</option>
-                  <option value="family">Gia đình</option>
-                  <option value="friends">Bạn bè</option>
-                  <option value="healing">Chữa lành</option>
-                  <option value="hope">Hy vọng</option>
-                  <option value="uncategorized">Tâm tình khác</option>
-                </select>
+                <span class="form-label" id="category-label">Danh mục cảm xúc</span>
+                <div class="picker" id="category-picker">
+                  <button type="button" class="form-select picker-trigger" id="input-category" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="category-label input-category">
+                    <span class="picker-value">Những điều khó nói</span>
+                  </button>
+                  <div class="picker-panel" role="listbox" aria-labelledby="category-label" hidden>
+                    <button type="button" class="picker-option" role="option" data-value="unsaid">Những điều khó nói</button>
+                    <button type="button" class="picker-option" role="option" data-value="miss_you">Nỗi nhớ</button>
+                    <button type="button" class="picker-option" role="option" data-value="apology">Lời xin lỗi</button>
+                    <button type="button" class="picker-option" role="option" data-value="gratitude">Lời cảm ơn</button>
+                    <button type="button" class="picker-option" role="option" data-value="love">Tình yêu</button>
+                    <button type="button" class="picker-option" role="option" data-value="family">Gia đình</button>
+                    <button type="button" class="picker-option" role="option" data-value="friends">Bạn bè</button>
+                    <button type="button" class="picker-option" role="option" data-value="healing">Chữa lành</button>
+                    <button type="button" class="picker-option" role="option" data-value="hope">Hy vọng</button>
+                    <button type="button" class="picker-option" role="option" data-value="uncategorized">Tâm tình khác</button>
+                  </div>
+                </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Cảm xúc đại diện</label>
-                <button type="button" class="btn btn-secondary" id="main-emotion-btn" style="width: 100%; font-size: 1.35rem; justify-content: center; height: 42px;" title="Bấm để đổi cảm xúc">
-                  💌
-                </button>
-                <span class="form-hint">Bấm để xoay vòng cảm xúc</span>
+                <span class="form-label" id="emotion-label">Cảm xúc</span>
+                <div class="picker picker-emoji" id="emotion-picker">
+                  <button type="button" class="form-select picker-trigger" id="main-emotion-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="emotion-label main-emotion-btn">
+                    <span class="picker-value">💌</span>
+                  </button>
+                  <div class="picker-panel" role="listbox" aria-labelledby="emotion-label" hidden>
+                    <!-- Options rendered by write.js -->
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -321,13 +330,13 @@
             </div>
 
             <div class="form-group">
-              <label for="input-pattern" class="form-label">Họa tiết nền giấy</label>
-              <select id="input-pattern" class="form-select">
-                <option value="none">Trơn tĩnh lặng</option>
-                <option value="ruled">Dòng kẻ viết thư cổ điển</option>
-                <option value="dots">Lưới chấm sổ tay cá nhân</option>
-                <option value="stars">Chấm sao lấp lánh</option>
-              </select>
+              <span class="form-label" id="pattern-label">Họa tiết nền giấy</span>
+              <div class="text-shadow-choice-row" id="input-pattern" role="radiogroup" aria-labelledby="pattern-label">
+                <button type="button" class="btn btn-secondary btn-sm active" role="radio" aria-checked="true" data-pattern="none">Trơn tĩnh lặng</button>
+                <button type="button" class="btn btn-secondary btn-sm" role="radio" aria-checked="false" data-pattern="ruled">Dòng kẻ cổ điển</button>
+                <button type="button" class="btn btn-secondary btn-sm" role="radio" aria-checked="false" data-pattern="dots">Lưới chấm sổ tay</button>
+                <button type="button" class="btn btn-secondary btn-sm" role="radio" aria-checked="false" data-pattern="stars">Chấm sao lấp lánh</button>
+              </div>
             </div>
           </div>
 
@@ -366,6 +375,9 @@
 
           <div class="preview-card-stage">
             <article class="stationery-card template-letter-vintage" id="preview-stationery-card">
+              <!-- Same fixed 580px canvas as card-renderer.js, scaled to the card's
+                   width so the preview keeps the desktop layout on every screen. -->
+              <div class="stationery-card-canvas">
               <div class="stationery-card-inner">
                 <div class="card-header-row">
                   <div class="unboxed-meta">
@@ -388,6 +400,7 @@
                 </div>
               </div>
               <div class="sticker-container-layer"></div>
+              </div>
             </article>
           </div>
 

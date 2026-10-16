@@ -158,15 +158,65 @@
   transition: all var(--transition-fast);
 }
 
+/* Date filter chips + custom range (read.html) */
+.date-filter-chip {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8125rem;
+}
+
+.date-range-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  max-width: 420px;
+}
+
+.date-range-inputs[hidden] {
+  display: none;
+}
+
+.date-range-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-ink-subtle);
+}
+
+.date-range-field .form-input {
+  min-width: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Short tab labels, swapped in on mobile (see responsive.css) */
+.label-short {
+  display: none;
+}
+
 .filter-tab-btn:hover {
   color: var(--color-antique-ink);
 }
 
+/* Solid ink fill (not white-on-near-white) so the active tab reads at a
+   glance — matches .template-filter-pill.active in the editor. */
 .filter-tab-btn.active {
-  background-color: var(--color-white);
-  color: var(--color-antique-ink);
+  background-color: var(--color-antique-ink);
+  color: var(--color-white);
   box-shadow: var(--shadow-subtle);
   font-weight: 600;
+}
+
+.filter-tab-btn.active:hover {
+  color: var(--color-white);
+}
+
+/* Emoji chips: a dark fill would swallow the emoji, so use a rose ring. */
+.filter-tab-btn.emotion-filter-chip.active {
+  background-color: var(--color-soft-pink);
+  color: var(--color-antique-ink);
+  box-shadow: inset 0 0 0 1.5px var(--color-dusty-rose);
 }
 
 /* --------------------------------------------------------------------------
@@ -194,14 +244,16 @@
 .stationery-card {
   position: relative;
   width: 100%;
+  aspect-ratio: 3 / 2;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   overflow: hidden;
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-  display: flex;
-  flex-direction: column;
   border: 1px solid var(--color-border-hairline);
   color: var(--color-antique-ink);
+  /* Exposes this card's actual rendered width as `cqw` units, used below to
+     compute the canvas's scale factor. */
+  container-type: inline-size;
 }
 
 .stationery-card:hover {
@@ -209,11 +261,21 @@
   box-shadow: var(--shadow-float);
 }
 
+.stationery-card-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 580px;
+  height: 386.67px;
+  transform: scale(calc(100cqw / 580px));
+  transform-origin: top left;
+}
+
 .stationery-card-inner {
   position: relative;
   width: 100%;
-  min-height: 280px;
-  padding: clamp(1.5rem, 4vw, 2.25rem);
+  height: 100%;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -245,7 +307,11 @@
 }
 
 .card-body-text {
-  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  /* Fixed, not viewport-relative — the whole canvas is scaled as one unit
+     (see .stationery-card-canvas), so a vw-based size here would be sized
+     against the real screen instead of the fixed 580px design width and
+     break the "identical layout, only the scale changes" guarantee. */
+  font-size: 1.15rem;
   line-height: 1.8;
   font-weight: 500;
   color: inherit;
@@ -592,16 +658,28 @@
   transition: transform var(--transition-gentle), box-shadow var(--transition-gentle);
 }
 
-.envelope-card:hover {
-  transform: translateY(-6px) scale(1.015);
-  box-shadow: 0 28px 48px -14px rgba(24, 32, 53, 0.22);
-  animation-play-state: paused;
+/* Hover lift only on real pointer devices — on touch screens :hover sticks
+   after the tap, leaving the opened card scaled (and its text blurry). */
+@media (hover: hover) {
+  .envelope-card:not(.opened):hover {
+    transform: translateY(-6px) scale(1.015);
+    box-shadow: 0 28px 48px -14px rgba(24, 32, 53, 0.22);
+    animation-play-state: paused;
+  }
 }
 
+/* Once opened, drop every transform/3D context around the letter so the
+   card is rasterized at its native resolution (no scale/perspective blur),
+   and let the envelope shrink to the card's height. */
 .envelope-card.opened {
   height: auto;
-  min-height: 320px;
   animation: none;
+  transform: none;
+  cursor: default;
+}
+
+.interactive-envelope-wrapper:has(.envelope-card.opened) {
+  perspective: none;
 }
 
 @keyframes envelope-float {
@@ -614,10 +692,11 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 0;
-  border-left: 260px solid transparent;
-  border-right: 260px solid transparent;
-  border-top: 150px solid #DFCBB8;
+  /* clip-path triangle instead of fixed-width borders so the flap always
+     spans exactly the envelope's width, whatever the screen size. */
+  height: 150px;
+  background-color: #DFCBB8;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top;
   transition: transform var(--transition-unfold);
   z-index: 4;
@@ -655,6 +734,13 @@
   animation: none;
 }
 
+/* Keep the "open me" prompt below the flap tip and wax seal so they never
+   overlap the text. */
+#envelope-open-prompt {
+  padding: 170px 1.25rem 1.25rem;
+  text-align: center;
+}
+
 @keyframes wax-seal-pulse {
   0%, 100% {
     box-shadow: 0 4px 12px rgba(107, 29, 46, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.2), 0 0 0 0 rgba(158, 56, 77, 0.35);
@@ -666,7 +752,9 @@
 
 /* Letter reveal: slides up and fades in as the envelope opens */
 .envelope-letter-reveal {
-  animation: letter-reveal-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  /* `backwards`, not `both`: don't keep a transform on the card after the
+     animation ends, which would keep it on a blurry composited layer. */
+  animation: letter-reveal-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 @keyframes letter-reveal-up {
@@ -748,6 +836,7 @@
   max-width: 620px;
   width: 100%;
   max-height: 90vh;
+  max-height: 90dvh; /* shrinks correctly when the mobile virtual keyboard opens */
   overflow-y: auto;
   box-shadow: var(--shadow-float);
   border: 1px solid var(--color-border-hairline);
@@ -777,7 +866,22 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+/* Focus reader modal (built in app.js) */
+.reader-modal-body {
+  padding: 2rem 2.25rem;
+}
+
+.reader-modal-footer {
+  justify-content: space-between;
+}
+
+.reader-modal-actions {
+  display: flex;
+  gap: 0.5rem;
 }
 
 /* Toast Notifications */

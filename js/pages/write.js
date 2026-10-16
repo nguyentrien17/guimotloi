@@ -9,6 +9,7 @@ import { TEMPLATES_100, TEMPLATE_CATEGORIES, getTemplateById, filterTemplates } 
 import { FONT_CATEGORIES, FONTS_LIST, filterFonts, getFontById } from '../components/font-library.js';
 import { initEmojiPicker } from '../components/emoji-picker.js';
 import { StickerEditor } from '../components/sticker-editor.js';
+import { initPicker } from '../components/picker.js';
 import { exportCardAsPng } from '../components/card-renderer.js';
 import { saveDraft, loadDraft, clearDraft } from '../utils/storage.js';
 import { MAX_CONTENT_LENGTH, setTextSafe } from '../utils/validation.js';
@@ -66,9 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const contentTextarea = document.getElementById('input-content');
   const charCounter = document.getElementById('char-counter');
-  const categorySelect = document.getElementById('input-category');
   const aliasInput = document.getElementById('input-alias');
-  const mainEmotionBtn = document.getElementById('main-emotion-btn');
 
   // Tab 2 Elements
   const templateSearchInput = document.getElementById('template-search-input');
@@ -84,7 +83,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const textShadowContainer = document.getElementById('text-shadow-choices');
   const customTextColorInput = document.getElementById('custom-text-color');
   const customBgColorInput = document.getElementById('custom-bg-color');
-  const patternSelect = document.getElementById('input-pattern');
+  const patternChoices = document.getElementById('input-pattern');
+  const syncPatternChoices = (value) => {
+    if (!patternChoices) return;
+    patternChoices.querySelectorAll('[data-pattern]').forEach((btn) => {
+      const isActive = btn.dataset.pattern === value;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-checked', String(isActive));
+    });
+  };
 
   // Tab 3 Elements: Font Library & Sliders
   const fontCategoryFilterBar = document.getElementById('font-category-filter-bar');
@@ -121,12 +128,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Populate Initial Form Fields from state
   if (contentTextarea) contentTextarea.value = state.content;
-  if (categorySelect) categorySelect.value = state.category;
   if (aliasInput) aliasInput.value = state.alias;
-  if (mainEmotionBtn) mainEmotionBtn.textContent = state.emotion;
+
+  // Category & emotion pickers (custom dropdowns instead of a native <select>
+  // / tap-to-cycle button, so the option list matches the page's type scale).
+  const categoryPicker = initPicker(document.getElementById('category-picker'), (value) => {
+    state.category = value;
+    state.categoryName = getCategoryLabel(state.category);
+    updatePreview();
+    autoSaveDraft();
+  });
+  if (categoryPicker) categoryPicker.setValue(state.category);
+
+  const EMOTION_CHOICES = ['💌', '🌙', '🤍', '✨', '🌻', '🥹', '🌧️', '🕊️', '💗', '💔', '🌈', '🌱', '🕯️', '🌸', '☕'];
+  if (!EMOTION_CHOICES.includes(state.emotion)) EMOTION_CHOICES.unshift(state.emotion);
+  const emotionPickerEl = document.getElementById('emotion-picker');
+  if (emotionPickerEl) {
+    // Built with DOM APIs, not innerHTML: state.emotion can come from the URL.
+    const panel = emotionPickerEl.querySelector('.picker-panel');
+    EMOTION_CHOICES.forEach((emo) => {
+      const opt = document.createElement('button');
+      opt.type = 'button';
+      opt.className = 'picker-option';
+      opt.setAttribute('role', 'option');
+      opt.dataset.value = emo;
+      opt.textContent = emo;
+      panel.appendChild(opt);
+    });
+  }
+  const emotionPicker = initPicker(emotionPickerEl, (value) => {
+    state.emotion = value;
+    updatePreview();
+    autoSaveDraft();
+  });
+  if (emotionPicker) emotionPicker.setValue(state.emotion);
   if (customBgColorInput) customBgColorInput.value = state.design.background || '#FAF4EB';
   if (customTextColorInput) customTextColorInput.value = state.design.textColor || '#4A3B32';
-  if (patternSelect) patternSelect.value = state.design.pattern || 'none';
+  syncPatternChoices(state.design.pattern || 'none');
 
   if (sliderFontSize) {
     sliderFontSize.value = String(state.design.fontSize || 18);
@@ -454,9 +492,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Pattern Selection
-  if (patternSelect) {
-    patternSelect.addEventListener('change', () => {
-      state.design.pattern = patternSelect.value;
+  if (patternChoices) {
+    patternChoices.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-pattern]');
+      if (!btn) return;
+      state.design.pattern = btn.dataset.pattern;
+      syncPatternChoices(state.design.pattern);
       updatePreview();
       autoSaveDraft();
     });
@@ -498,19 +539,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (btnBringFront) btnBringFront.addEventListener('click', () => stickerEditor.bringToFront());
   if (btnDeleteSticker) btnDeleteSticker.addEventListener('click', () => stickerEditor.deleteSelected());
 
-  // Bind Main Emotion Picker Dropdown / Toggle
-  if (mainEmotionBtn) {
-    mainEmotionBtn.addEventListener('click', () => {
-      const emotions = ['💌', '🌙', '🤍', '✨', '🌻', '🥹', '🌧️', '🕊️', '💗', '💔', '🌈', '🌱', '🕯️'];
-      const currentIndex = emotions.indexOf(state.emotion);
-      const nextIndex = (currentIndex + 1) % emotions.length;
-      state.emotion = emotions[nextIndex];
-      mainEmotionBtn.textContent = state.emotion;
-      updatePreview();
-      autoSaveDraft();
-    });
-  }
-
   // Bind Tab Navigation in Studio
   const editorTabs = document.querySelectorAll('.editor-tab-btn');
   const editorContents = document.querySelectorAll('.editor-tab-content');
@@ -533,13 +561,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const len = state.content.length;
     charCounter.textContent = `${len}/${MAX_CONTENT_LENGTH}`;
     charCounter.classList.toggle('warning', len > MAX_CONTENT_LENGTH - 20);
-    updatePreview();
-    autoSaveDraft();
-  });
-
-  categorySelect.addEventListener('change', () => {
-    state.category = categorySelect.value;
-    state.categoryName = getCategoryLabel(state.category);
     updatePreview();
     autoSaveDraft();
   });
@@ -637,7 +658,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (customBgColorInput) customBgColorInput.value = tmpl.background;
     if (customTextColorInput) customTextColorInput.value = tmpl.textColor;
-    if (patternSelect) patternSelect.value = state.design.pattern;
+    syncPatternChoices(state.design.pattern);
 
     syncTextColorSwatches(state.design.textColor);
 
@@ -746,7 +767,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 7. Metadata
     setTextSafe(previewCategory, state.categoryName);
-    setTextSafe(previewDate, 'Vừa xong');
+    setTextSafe(previewDate, new Date().toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }));
     setTextSafe(previewAlias, `— ${state.alias.trim() || 'Một người lạ'}`);
     if (previewEmotion) previewEmotion.textContent = state.emotion;
 
