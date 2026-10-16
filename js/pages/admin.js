@@ -100,19 +100,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const auditCloseBtn = document.getElementById('audit-modal-close-btn');
   const auditDismissBtn = document.getElementById('audit-modal-dismiss-btn');
 
-  // Technical Accordion Toggle
-  const securityToggle = document.getElementById('security-notice-toggle');
-  const securityContent = document.getElementById('security-notice-content');
-  const securityArrow = document.getElementById('security-notice-arrow');
-
-  if (securityToggle && securityContent) {
-    securityToggle.addEventListener('click', () => {
-      const isHidden = securityContent.style.display === 'none';
-      securityContent.style.display = isHidden ? 'block' : 'none';
-      securityArrow.textContent = isHidden ? 'Thu gọn ▲' : 'Chi tiết ▼';
-    });
-  }
-
   // Active State
   const state = {
     status: 'all',

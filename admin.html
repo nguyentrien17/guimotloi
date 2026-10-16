@@ -341,30 +341,6 @@
             </button>
           </div>
         </div>
-
-        <!-- 4. Security & API Contract Technical Accordion -->
-        <div class="security-notice-card">
-          <div class="security-notice-header" id="security-notice-toggle" role="button" tabindex="0">
-            <div style="display: flex; align-items: center; gap: 0.65rem;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-dusty-rose);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              <strong style="font-size: 0.9375rem; color: var(--color-antique-ink);">Kiến Trúc Bảo Mật & API Contract Cho Môi Trường Production</strong>
-            </div>
-            <span id="security-notice-arrow" style="font-size: 0.8125rem; color: var(--color-ink-subtle);">Chi tiết ▼</span>
-          </div>
-          <div class="security-notice-body" id="security-notice-content" style="display: none;">
-            <p>
-              <strong>Lưu ý kiến trúc an toàn:</strong> Trong ứng dụng web tĩnh chỉ sử dụng JavaScript phía client và file XML, trình duyệt không thể tự cung cấp cơ chế phân quyền bảo mật tuyệt đối hay ghi trực tiếp vào đĩa cứng máy chủ. Để đảm bảo an toàn tuyệt đối khi đưa lên Internet, hệ thống đã được phân tách hoàn toàn theo chuẩn <code>AdminRepository</code> với hợp đồng API RESTful sau:
-            </p>
-            <div class="api-endpoint-list">
-              <div class="api-endpoint-item"><span class="http-method http-post">POST</span> /api/admin/auth/login — Xác thực danh tính quản trị viên & cấp JWT Bearer Token</div>
-              <div class="api-endpoint-item"><span class="http-method http-get">GET</span> /api/admin/stats — Trả về số liệu thống kê thực tế được tính toán từ cơ sở dữ liệu</div>
-              <div class="api-endpoint-item"><span class="http-method http-get">GET</span> /api/admin/messages — Truy vấn danh sách thư có kiểm tra quyền, phân trang và tìm kiếm</div>
-              <div class="api-endpoint-item"><span class="http-method http-patch">PATCH</span> /api/admin/messages/:id/status — Ẩn/hiện/chờ duyệt thư kèm lý do và ghi nhận audit log</div>
-              <div class="api-endpoint-item"><span class="http-method http-delete">DELETE</span> /api/admin/messages/:id — Xóa mềm hoặc xóa vĩnh viễn thư khỏi cơ sở dữ liệu</div>
-              <div class="api-endpoint-item"><span class="http-method http-post">POST</span> /api/admin/messages/batch — Thực hiện thao tác hàng loạt có kiểm soát quyền hạn</div>
-            </div>
-          </div>
-        </div>
       </section>
     </main>
 
