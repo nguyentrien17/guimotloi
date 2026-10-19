@@ -40,24 +40,50 @@ export function initPicker(root, onSelect) {
   const valueEl = root.querySelector('.picker-value');
   const options = () => Array.from(panel.querySelectorAll('.picker-option'));
 
-  // Open upward when the space below — inside the nearest clipping/scrolling
-  // ancestor, or the viewport — is too short for the panel.
+  // The panel is position: fixed and placed against the viewport, so no
+  // ancestor with overflow (editor panel, tab content) can clip it. It opens
+  // below the trigger, or above when there's more room there, never under
+  // the sticky site header, and shrinks its max-height to the space it has.
+  const GAP = 6;
+  const EDGE = 8;
+  const MAX_HEIGHT = 280;
   const placePanel = () => {
-    root.classList.remove('drop-up');
-    const triggerRect = trigger.getBoundingClientRect();
-    let top = 0;
-    let bottom = window.innerHeight;
-    for (let el = root.parentElement; el && el !== document.body; el = el.parentElement) {
-      if (getComputedStyle(el).overflowY !== 'visible') {
-        const r = el.getBoundingClientRect();
-        top = Math.max(top, r.top);
-        bottom = Math.min(bottom, r.bottom);
-      }
-    }
-    const needed = panel.offsetHeight + 8;
-    const below = bottom - triggerRect.bottom;
-    const above = triggerRect.top - top;
-    if (below < needed && above > below) root.classList.add('drop-up');
+    const r = trigger.getBoundingClientRect();
+    const header = document.querySelector('.site-header');
+    const minTop = (header ? Math.max(0, header.getBoundingClientRect().bottom) : 0) + EDGE;
+    const maxBottom = window.innerHeight - EDGE;
+
+    // Width: match the trigger, unless the stylesheet gives the panel its
+    // own width (emoji grid) — then right-align it to the trigger. Set it
+    // before measuring height, since wrapping depends on it.
+    const ownWidth = root.classList.contains('picker-emoji');
+    if (!ownWidth) panel.style.width = `${r.width}px`;
+    const width = ownWidth ? panel.offsetWidth : r.width;
+
+    const spaceBelow = maxBottom - (r.bottom + GAP);
+    const spaceAbove = (r.top - GAP) - minTop;
+
+    panel.style.maxHeight = `${MAX_HEIGHT}px`;
+    const natural = Math.min(panel.scrollHeight, MAX_HEIGHT);
+    const dropUp = spaceBelow < natural && spaceAbove > spaceBelow;
+    const height = Math.max(120, Math.min(natural, dropUp ? spaceAbove : spaceBelow));
+    panel.style.maxHeight = `${height}px`;
+
+    let left = ownWidth ? r.right - width : r.left;
+    left = Math.max(EDGE, Math.min(left, window.innerWidth - width - EDGE));
+
+    panel.style.left = `${left}px`;
+    panel.style.top = dropUp ? `${Math.max(minTop, r.top - GAP - height)}px` : `${r.bottom + GAP}px`;
+    root.classList.toggle('drop-up', dropUp);
+  };
+
+  // Keep the panel attached to its trigger while the page scrolls/resizes;
+  // close it if the trigger scrolls out of view.
+  const onViewportChange = (e) => {
+    if (panel.hidden || (e && panel.contains(e.target))) return;
+    const r = trigger.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) picker.close();
+    else placePanel();
   };
 
   const picker = {
@@ -69,14 +95,19 @@ export function initPicker(root, onSelect) {
       root.classList.add('open');
       trigger.setAttribute('aria-expanded', 'true');
       openPickers.add(picker);
+      window.addEventListener('scroll', onViewportChange, true);
+      window.addEventListener('resize', onViewportChange);
       const selected = panel.querySelector('.picker-option.selected') || options()[0];
       if (selected) {
-        selected.scrollIntoView({ block: 'nearest' });
+        // Scroll only the panel (scrollIntoView could also move the page).
+        panel.scrollTop = selected.offsetTop - (panel.clientHeight - selected.offsetHeight) / 2;
         selected.focus({ preventScroll: true });
       }
     },
     close(returnFocus = false) {
       if (panel.hidden) return;
+      window.removeEventListener('scroll', onViewportChange, true);
+      window.removeEventListener('resize', onViewportChange);
       panel.hidden = true;
       root.classList.remove('open');
       trigger.setAttribute('aria-expanded', 'false');

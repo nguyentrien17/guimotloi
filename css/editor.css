@@ -185,14 +185,15 @@
   white-space: nowrap;
 }
 
+/* Fixed to the viewport (top/left/width/max-height set by picker.js) so
+   ancestors with overflow can't clip it. z-index: above the sticky site
+   header (50), below the mobile nav drawer (60). */
 .picker-panel {
-  position: absolute;
-  top: calc(100% + 0.375rem);
-  left: 0;
-  right: 0;
-  z-index: 30;
+  position: fixed;
+  z-index: 55;
   max-height: 280px;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 0.375rem;
   background-color: var(--color-white);
   border: 1px solid var(--color-border-subtle);
@@ -201,11 +202,6 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-}
-
-.picker.drop-up .picker-panel {
-  top: auto;
-  bottom: calc(100% + 0.375rem);
 }
 
 /* Higher specificity than `.picker-emoji .picker-panel { display: grid }`
@@ -246,7 +242,6 @@
 }
 
 .picker-emoji .picker-panel {
-  left: auto;
   width: min(15rem, calc(100vw - 2rem));
   display: grid;
   grid-template-columns: repeat(5, 1fr);

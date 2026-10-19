@@ -9,9 +9,10 @@
     gap: 2rem;
   }
 
+  /* Stacked layout keeps source order: editor controls first, live preview
+     + export/submit actions below. */
   .editor-preview-panel {
     position: static;
-    order: -1;
   }
 
   .preview-card-stage {
