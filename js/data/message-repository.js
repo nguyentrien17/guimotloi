@@ -256,6 +256,13 @@ class MessageRepository {
       );
     }
 
+    // Newest first; messages with an unparseable date sink to the end
+    const time = (m) => {
+      const t = new Date(m.createdAt).getTime();
+      return Number.isNaN(t) ? -Infinity : t;
+    };
+    result.sort((a, b) => time(b) - time(a));
+
     return result;
   }
 
